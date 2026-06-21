@@ -2,6 +2,147 @@
    LUDICROUS CREATIONS — Main JavaScript
    ════════════════════════════════════════════════════════════════ */
 
+/* ════════════════════════════════════════════════════════════════
+   PRODUCT IMAGE CONFIGURATION
+   ─────────────────────────────────────────────────────────────────
+   HOW TO ADD YOUR ETSY PHOTOS:
+   1. Open https://www.etsy.com/listing/989237928 in your browser
+   2. Click each product photo to open it full-size
+   3. Right-click the image → "Copy image address"
+   4. Paste the URL as a string in the arcade array below
+   5. Repeat for all photos (Etsy listings typically have 5–10)
+   ════════════════════════════════════════════════════════════════ */
+const PRODUCT_IMAGES = {
+    arcade: [
+        // Paste your Etsy product photo URLs here, one per line, e.g.:
+        // 'https://i.etsystatic.com/12345678/r/il_fullxfull.1234567890_xxxx.jpg',
+        // 'https://i.etsystatic.com/12345678/r/il_fullxfull.2345678901_xxxx.jpg',
+        // 'https://i.etsystatic.com/12345678/r/il_fullxfull.3456789012_xxxx.jpg',
+    ],
+};
+
+/* ── Gallery initialisation ─────────────────────────────────────── */
+(function () {
+    const GALLERIES = {
+        arcade: {
+            wrap:     document.getElementById('arcadeMainWrap'),
+            mainImg:  document.getElementById('arcadeMainImg'),
+            thumbs:   document.getElementById('arcadeThumbs'),
+            counter:  document.getElementById('arcadeCounter'),
+            fallback: document.getElementById('arcadeFallback'),
+            images:   PRODUCT_IMAGES.arcade,
+            current:  0,
+        },
+    };
+
+    function initGallery(key) {
+        const g = GALLERIES[key];
+        if (!g || !g.images || g.images.filter(Boolean).length === 0) return;
+
+        const validImgs = g.images.filter(Boolean);
+        g.images = validImgs;
+
+        g.wrap.classList.add('has-photos');
+        loadSlide(key, 0);
+
+        /* Build thumbnails */
+        validImgs.forEach((url, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'gallery-thumb' + (i === 0 ? ' active' : '');
+            btn.setAttribute('aria-label', `Photo ${i + 1}`);
+            const img = document.createElement('img');
+            img.src = url;
+            img.alt = `Product photo ${i + 1}`;
+            img.loading = 'lazy';
+            btn.appendChild(img);
+            btn.addEventListener('click', () => goToSlide(key, i));
+            g.thumbs.appendChild(btn);
+        });
+
+        updateCounter(key);
+    }
+
+    function loadSlide(key, index) {
+        const g = GALLERIES[key];
+        const url = g.images[index];
+        if (!url) return;
+
+        g.mainImg.classList.add('fading');
+        setTimeout(() => {
+            g.mainImg.src = url;
+            g.mainImg.onload = () => {
+                g.mainImg.classList.remove('fading');
+                g.mainImg.classList.add('loaded');
+            };
+            g.mainImg.onerror = () => {
+                g.mainImg.classList.remove('fading');
+            };
+        }, 200);
+    }
+
+    function goToSlide(key, index) {
+        const g = GALLERIES[key];
+        if (index < 0) index = g.images.length - 1;
+        if (index >= g.images.length) index = 0;
+        g.current = index;
+        loadSlide(key, index);
+        updateThumbs(key);
+        updateCounter(key);
+    }
+
+    function updateThumbs(key) {
+        const g = GALLERIES[key];
+        g.thumbs.querySelectorAll('.gallery-thumb').forEach((btn, i) => {
+            btn.classList.toggle('active', i === g.current);
+        });
+    }
+
+    function updateCounter(key) {
+        const g = GALLERIES[key];
+        if (g.counter) {
+            g.counter.textContent = `${g.current + 1} / ${g.images.length}`;
+        }
+    }
+
+    /* Wire up nav arrows */
+    document.querySelectorAll('.gallery-prev').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const key = btn.dataset.gallery;
+            if (GALLERIES[key]) goToSlide(key, GALLERIES[key].current - 1);
+        });
+    });
+    document.querySelectorAll('.gallery-next').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const key = btn.dataset.gallery;
+            if (GALLERIES[key]) goToSlide(key, GALLERIES[key].current + 1);
+        });
+    });
+
+    /* Keyboard support when gallery is in view */
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft')  goToSlide('arcade', GALLERIES.arcade.current - 1);
+        if (e.key === 'ArrowRight') goToSlide('arcade', GALLERIES.arcade.current + 1);
+    });
+
+    /* Touch/swipe support */
+    (function () {
+        const wrap = document.getElementById('arcadeMainWrap');
+        if (!wrap) return;
+        let startX = 0;
+        wrap.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+        wrap.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].clientX - startX;
+            if (Math.abs(dx) > 40) {
+                dx < 0 ? goToSlide('arcade', GALLERIES.arcade.current + 1)
+                       : goToSlide('arcade', GALLERIES.arcade.current - 1);
+            }
+        }, { passive: true });
+    }());
+
+    /* Init all galleries */
+    Object.keys(GALLERIES).forEach(initGallery);
+}());
+
 /* ── Navigation ────────────────────────────────────────────────── */
 (function () {
     const navbar    = document.getElementById('navbar');
@@ -84,26 +225,30 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const PRODUCTS = {
     arcade: {
         number: '01',
-        name:   'Mini Arcade Apple Watch Charge Station',
-        desc:   'Your Apple Watch deserves a charging station as iconic as itself. This miniature arcade cabinet keeps your watch powered up while putting its face front and center — complete with a working joystick detail and bold arcade styling. It\'s the charger that starts conversations.',
+        name:   'Mini TV Apple Watch Charge Station',
+        desc:   'A fun, retro way to display and charge your Apple Watch. The watch face becomes the television screen, giving your desk a clever vintage-TV look. The spinning control knob doubles as a satisfying fidget toy — and the whole thing is crafted with a 3D printer, so each piece is uniquely yours.',
         features: [
-            'Classic full-size arcade cabinet silhouette scaled for your desk',
-            'Apple Watch face stays fully visible and interactive while charging',
-            'Charging cable threads cleanly through internal grooves — no cord clutter',
-            'Functional movable joystick detail adds authentic arcade personality',
-            'Fits all Apple Watch sizes and generations',
-            'No tools required — setup and removal in seconds',
+            'Retro mini TV design — Apple Watch face IS the TV screen',
+            'Fits Apple Watch Series 1–10, 38–45mm (does not fit Apple Watch Ultra)',
+            'Spinning TV control knob doubles as a fidget toy',
+            'Circular cutout in the back holds your magnetic charger in place',
+            'Built-in wire routing keeps the charging cable hidden',
+            'Holds the standard Apple-provided magnetic charger (not included)',
+            '3D-printed — each piece is unique; small variations add to the character',
+            'Available in many colors — over 8,900 Etsy favorites',
         ],
         specs: [
-            { label: 'Material',  value: '3D-Printed PLA' },
-            { label: 'Cable',     value: 'Standard Apple Watch charger (not included)' },
-            { label: 'Colors',    value: 'Multiple available' },
-            { label: 'Made In',   value: 'Royal Oak, Michigan' },
-            { label: 'Use',       value: 'Desk / Nightstand' },
-            { label: 'Best For',  value: 'Apple Watch owners' },
+            { label: 'Material',      value: '3D-Printed PLA' },
+            { label: 'Compatibility', value: 'Apple Watch Series 1–10, 38–45mm' },
+            { label: 'Not Compatible', value: 'Apple Watch Ultra' },
+            { label: 'Charger',       value: 'Standard Apple magnetic charger (not included)' },
+            { label: 'Colors',        value: 'Many options available' },
+            { label: 'Made In',       value: 'Royal Oak, Michigan' },
+            { label: 'Use',           value: 'Desk / Nightstand' },
+            { label: 'Etsy Favorites', value: '8,900+' },
         ],
         colors: ['#7b2ff7','#ff3b30','#007aff','#34c759','#ffd60a','#ff9f0a','#1c1c1e','#f5f5f7'],
-        etsy:   'https://www.etsy.com/shop/LudicrousCreations',
+        etsy:   'https://www.etsy.com/listing/989237928/mini-tv-apple-watch-charging-station',
     },
     webcam: {
         number: '02',
@@ -202,7 +347,29 @@ function openModal(productKey) {
         </div>`
     ).join('');
 
+    /* Build inline photo gallery if images are configured */
+    const imgs = (PRODUCT_IMAGES[productKey] || []).filter(Boolean);
+    let photoSection = '';
+    if (imgs.length > 0) {
+        const thumbs = imgs.map((url, i) =>
+            `<button class="modal-thumb ${i === 0 ? 'active' : ''}"
+                     data-idx="${i}" data-product="${productKey}"
+                     onclick="modalThumbClick(this)"
+                     aria-label="Photo ${i + 1}">
+                <img src="${url}" alt="Product photo ${i + 1}" loading="lazy">
+             </button>`
+        ).join('');
+        photoSection = `
+            <div class="modal-gallery" id="modalGallery_${productKey}">
+                <div class="modal-gallery-main">
+                    <img id="modalGalleryMain_${productKey}" src="${imgs[0]}" alt="${p.name}" loading="eager">
+                </div>
+                ${imgs.length > 1 ? `<div class="modal-gallery-thumbs">${thumbs}</div>` : ''}
+            </div>`;
+    }
+
     modalBody.innerHTML = `
+        ${photoSection}
         <div class="modal-product-header">
             <div class="modal-product-number">${p.number}</div>
             <h2 class="modal-product-name">${p.name}</h2>
@@ -215,7 +382,7 @@ function openModal(productKey) {
         <p class="modal-section-title">Colors Available</p>
         <div class="modal-colors">${colorDots}</div>
 
-        <p class="modal-section-title">Details & Specs</p>
+        <p class="modal-section-title">Details &amp; Specs</p>
         <div class="modal-specs">${specItems}</div>
 
         <div class="modal-cta">
@@ -229,6 +396,23 @@ function openModal(productKey) {
     modalOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
 }
+
+function modalThumbClick(btn) {
+    const productKey = btn.dataset.product;
+    const idx = parseInt(btn.dataset.idx, 10);
+    const imgs = (PRODUCT_IMAGES[productKey] || []).filter(Boolean);
+    const mainImg = document.getElementById(`modalGalleryMain_${productKey}`);
+    if (mainImg && imgs[idx]) {
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+            mainImg.src = imgs[idx];
+            mainImg.style.opacity = '1';
+        }, 150);
+    }
+    btn.closest('.modal-gallery-thumbs').querySelectorAll('.modal-thumb')
+        .forEach(t => t.classList.toggle('active', t === btn));
+}
+window.modalThumbClick = modalThumbClick;
 
 function closeModal() {
     modalOverlay.classList.remove('open');
