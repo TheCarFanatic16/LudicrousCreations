@@ -14,10 +14,11 @@
    ════════════════════════════════════════════════════════════════ */
 const PRODUCT_IMAGES = {
     arcade: [
-        // Paste your Etsy product photo URLs here, one per line, e.g.:
-        // 'https://i.etsystatic.com/12345678/r/il_fullxfull.1234567890_xxxx.jpg',
-        // 'https://i.etsystatic.com/12345678/r/il_fullxfull.2345678901_xxxx.jpg',
-        // 'https://i.etsystatic.com/12345678/r/il_fullxfull.3456789012_xxxx.jpg',
+        'Photo/AppleWatchStand/AppleTVWatchStand1.JPG',
+        'Photo/AppleWatchStand/AppleTVWatchStand2.JPG',
+        'Photo/AppleWatchStand/AppleTVWatchStand3.JPG',
+        'Photo/AppleWatchStand/AppleTVWatchStand4.JPG',
+        'Photo/AppleWatchStand/AppleTVWatchStand5.JPG',
     ],
 };
 
