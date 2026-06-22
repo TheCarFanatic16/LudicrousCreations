@@ -20,6 +20,27 @@ const PRODUCT_IMAGES = {
         'Photo/AppleWatchStand/AppleTVWatchStand4.JPG',
         'Photo/AppleWatchStand/AppleTVWatchStand5.JPG',
     ],
+    webcam: [
+        'Photo/DocWebCam/DocWebCam1.JPG',
+        'Photo/DocWebCam/DocWebCam2.JPG',
+        'Photo/DocWebCam/DocWebCam3.JPG',
+        'Photo/DocWebCam/DocWebCam4.JPG',
+        'Photo/DocWebCam/DocWebCam5.JPG',
+    ],
+    sanitizer: [
+        'Photo/CarVentHandSanitizerHolder/HandSanitizerHolder.JPG',
+        'Photo/CarVentHandSanitizerHolder/HandSanitizerHolder2.JPG',
+        'Photo/CarVentHandSanitizerHolder/HandSanitizerHolder3.JPG',
+        'Photo/CarVentHandSanitizerHolder/HandSanitizerHolder4.JPG',
+        'Photo/CarVentHandSanitizerHolder/HandSanitizerHolder5.JPG',
+    ],
+    beer: [
+        'Photo/BeerHolster/BeerHolster1.JPG',
+        'Photo/BeerHolster/BeerHolster2.JPG',
+        'Photo/BeerHolster/BeerHolster3.JPG',
+        'Photo/BeerHolster/BeerHolster4.JPG',
+        'Photo/BeerHolster/BeerHolster5.JPG',
+    ],
 };
 
 /* ── Gallery initialisation ─────────────────────────────────────── */

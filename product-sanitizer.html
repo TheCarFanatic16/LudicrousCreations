@@ -44,9 +44,17 @@
 <section class="pp-hero pp-hero--sanitizer">
     <div class="pp-hero-inner">
         <div class="pp-gallery-wrap">
-            <div class="product-gallery">
-                <div class="gallery-main-wrap" style="background:#020c06;">
-                    <div class="gallery-fallback illus-sanitizer" style="opacity:1;pointer-events:none;">
+            <div class="product-gallery" id="ppGalleryWrap"
+                 data-images='[
+                     "Photo/CarVentHandSanitizerHolder/HandSanitizerHolder.JPG",
+                     "Photo/CarVentHandSanitizerHolder/HandSanitizerHolder2.JPG",
+                     "Photo/CarVentHandSanitizerHolder/HandSanitizerHolder3.JPG",
+                     "Photo/CarVentHandSanitizerHolder/HandSanitizerHolder4.JPG",
+                     "Photo/CarVentHandSanitizerHolder/HandSanitizerHolder5.JPG"
+                 ]'>
+                <div class="gallery-main-wrap">
+                    <img class="gallery-main-img" id="ppMainImg" src="" alt="Hand Sanitizer Car Vent Holder" style="transition:opacity 0.18s ease;">
+                    <div class="gallery-fallback illus-sanitizer" id="sanitizerFallback">
                         <div class="car-vent-wrap">
                             <div class="car-vent">
                                 <div class="vent-frame">
@@ -70,7 +78,15 @@
                             <div class="vent-glow"></div>
                         </div>
                     </div>
+                    <button class="gallery-nav gallery-prev" id="ppPrev" aria-label="Previous photo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button class="gallery-nav gallery-next" id="ppNext" aria-label="Next photo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                    <div class="gallery-counter" id="ppCounter"></div>
                 </div>
+                <div class="gallery-thumbs" id="ppThumbs"></div>
             </div>
         </div>
 
@@ -174,7 +190,7 @@
             </a>
             <a href="product-webcam.html" class="pp-related-card">
                 <div class="pp-related-visual pg-visual--webcam">
-                    <div class="illus-webcam"><div class="laptop"><div class="laptop-lid"><div class="laptop-screen-frame"><div class="laptop-screen"><div class="screen-ui"><div class="screen-bar"></div><div class="screen-content-line"></div><div class="screen-content-line short"></div></div><div class="projector-output"><div class="proj-beam"></div><div class="proj-doc"><div class="doc-line"></div><div class="doc-line short"></div></div></div></div></div><div class="webcam-clip"><div class="clip-body"><div class="clip-lens"></div></div><div class="clip-arm"></div></div></div><div class="laptop-hinge"></div><div class="laptop-base"><div class="trackpad"></div></div></div></div>
+                    <img src="Photo/DocWebCam/DocWebCam1.JPG" alt="Webcam Projector" style="width:100%;height:100%;object-fit:cover;">
                 </div>
                 <div class="pp-related-body">
                     <h3>Webcam Projector</h3>
@@ -183,7 +199,7 @@
             </a>
             <a href="product-beer.html" class="pp-related-card">
                 <div class="pp-related-visual pg-visual--beer">
-                    <div class="illus-beer"><div class="holster-scene"><div class="waistband"><div class="fabric-texture"></div><div class="holster-mount"><div class="holster-clip-body"><div class="holster-arm"></div><div class="cup-holder"><div class="cup"><div class="cup-body"><div class="beer-liquid"></div><div class="beer-foam"><div class="foam-bubble"></div><div class="foam-bubble b2"></div><div class="foam-bubble b3"></div></div></div><div class="cup-ring"></div></div></div></div></div></div><div class="holster-label-tag">HOLSTER</div></div></div>
+                    <img src="Photo/BeerHolster/BeerHolster1.JPG" alt="Beer Holster" style="width:100%;height:100%;object-fit:cover;">
                 </div>
                 <div class="pp-related-body">
                     <h3>Beer Holster</h3>
