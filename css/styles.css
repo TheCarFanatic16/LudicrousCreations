@@ -78,6 +78,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     letter-spacing: -0.3px;
     color: var(--white);
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+.nav-logo-img {
+    height: 28px;
+    width: auto;
+    border-radius: 5px;
+    display: block;
 }
 .nav-links {
     display: flex;
@@ -211,6 +219,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     text-align: center;
     padding: calc(var(--nav-height) + 40px) 24px 80px;
     max-width: 820px;
+}
+.hero-logo {
+    height: 56px;
+    width: auto;
+    border-radius: 10px;
+    margin-bottom: 28px;
+    display: inline-block;
 }
 .hero-eyebrow {
     font-size: 15px;
@@ -1386,6 +1401,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     font-weight: 700;
     letter-spacing: -0.5px;
     color: var(--white);
+    margin-bottom: 14px;
+}
+.footer-logo-img {
+    height: 38px;
+    width: auto;
+    border-radius: 6px;
+    display: block;
     margin-bottom: 14px;
 }
 .footer-brand p {
