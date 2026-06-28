@@ -239,41 +239,49 @@
     <section class="product-scene product-scene--light" id="product-webcam">
         <div class="product-scene-inner product-scene-inner--flip">
             <div class="product-scene-visual reveal">
-                <!-- CSS Laptop + Webcam Projector Illustration -->
-                <div class="illus-webcam">
-                    <div class="laptop">
-                        <div class="laptop-lid">
-                            <div class="laptop-screen-frame">
-                                <div class="laptop-screen">
-                                    <div class="screen-ui">
-                                        <div class="screen-bar"></div>
-                                        <div class="screen-content-line"></div>
-                                        <div class="screen-content-line short"></div>
-                                        <div class="screen-content-line"></div>
-                                        <div class="screen-content-line shorter"></div>
-                                    </div>
-                                    <div class="projector-output">
-                                        <div class="proj-beam"></div>
-                                        <div class="proj-doc">
-                                            <div class="doc-line"></div>
-                                            <div class="doc-line short"></div>
-                                            <div class="doc-line"></div>
+                <div class="product-gallery" id="webcamGallery">
+                    <div class="gallery-main-wrap" id="webcamMainWrap">
+                        <img class="gallery-main-img" id="webcamMainImg" src="" alt="Webcam Projector">
+                        <div class="gallery-fallback illus-webcam" id="webcamFallback">
+                            <div class="laptop">
+                                <div class="laptop-lid">
+                                    <div class="laptop-screen-frame">
+                                        <div class="laptop-screen">
+                                            <div class="screen-ui">
+                                                <div class="screen-bar"></div>
+                                                <div class="screen-content-line"></div>
+                                                <div class="screen-content-line short"></div>
+                                                <div class="screen-content-line"></div>
+                                                <div class="screen-content-line shorter"></div>
+                                            </div>
+                                            <div class="projector-output">
+                                                <div class="proj-beam"></div>
+                                                <div class="proj-doc">
+                                                    <div class="doc-line"></div>
+                                                    <div class="doc-line short"></div>
+                                                    <div class="doc-line"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="webcam-clip">
+                                        <div class="clip-body"><div class="clip-lens"></div></div>
+                                        <div class="clip-arm"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="webcam-clip">
-                                <div class="clip-body">
-                                    <div class="clip-lens"></div>
-                                </div>
-                                <div class="clip-arm"></div>
+                                <div class="laptop-hinge"></div>
+                                <div class="laptop-base"><div class="trackpad"></div></div>
                             </div>
                         </div>
-                        <div class="laptop-hinge"></div>
-                        <div class="laptop-base">
-                            <div class="trackpad"></div>
-                        </div>
+                        <button class="gallery-nav gallery-prev" data-gallery="webcam" aria-label="Previous photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button class="gallery-nav gallery-next" data-gallery="webcam" aria-label="Next photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                        <div class="gallery-counter" id="webcamCounter"></div>
                     </div>
+                    <div class="gallery-thumbs" id="webcamThumbs"></div>
                 </div>
             </div>
             <div class="product-scene-text">
@@ -317,32 +325,42 @@
                 </div>
             </div>
             <div class="product-scene-visual reveal">
-                <!-- CSS Car Vent + Sanitizer Illustration -->
-                <div class="illus-sanitizer">
-                    <div class="car-vent-wrap">
-                        <div class="car-vent">
-                            <div class="vent-frame">
-                                <div class="vent-slat"></div>
-                                <div class="vent-slat"></div>
-                                <div class="vent-slat"></div>
-                                <div class="vent-slat"></div>
-                            </div>
-                            <div class="vent-clip">
-                                <div class="clip-ring"></div>
-                                <div class="sanitizer-bottle">
-                                    <div class="bottle-top">
-                                        <div class="pump-head"></div>
-                                        <div class="pump-neck"></div>
+                <div class="product-gallery" id="sanitizerGallery">
+                    <div class="gallery-main-wrap" id="sanitizerMainWrap">
+                        <img class="gallery-main-img" id="sanitizerMainImg" src="" alt="Hand Sanitizer Car Vent Holder">
+                        <div class="gallery-fallback illus-sanitizer" id="sanitizerFallback">
+                            <div class="car-vent-wrap">
+                                <div class="car-vent">
+                                    <div class="vent-frame">
+                                        <div class="vent-slat"></div>
+                                        <div class="vent-slat"></div>
+                                        <div class="vent-slat"></div>
+                                        <div class="vent-slat"></div>
                                     </div>
-                                    <div class="bottle-body">
-                                        <div class="bottle-label">CLEAN</div>
+                                    <div class="vent-clip">
+                                        <div class="clip-ring"></div>
+                                        <div class="sanitizer-bottle">
+                                            <div class="bottle-top">
+                                                <div class="pump-head"></div>
+                                                <div class="pump-neck"></div>
+                                            </div>
+                                            <div class="bottle-body"><div class="bottle-label">CLEAN</div></div>
+                                            <div class="bottle-base"></div>
+                                        </div>
                                     </div>
-                                    <div class="bottle-base"></div>
                                 </div>
+                                <div class="vent-glow"></div>
                             </div>
                         </div>
-                        <div class="vent-glow"></div>
+                        <button class="gallery-nav gallery-prev" data-gallery="sanitizer" aria-label="Previous photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button class="gallery-nav gallery-next" data-gallery="sanitizer" aria-label="Next photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                        <div class="gallery-counter" id="sanitizerCounter"></div>
                     </div>
+                    <div class="gallery-thumbs" id="sanitizerThumbs"></div>
                 </div>
             </div>
         </div>
@@ -352,32 +370,44 @@
     <section class="product-scene product-scene--light" id="product-beer">
         <div class="product-scene-inner product-scene-inner--flip">
             <div class="product-scene-visual reveal">
-                <!-- CSS Beer Holster Illustration -->
-                <div class="illus-beer">
-                    <div class="holster-scene">
-                        <div class="waistband">
-                            <div class="fabric-texture"></div>
-                            <div class="holster-mount">
-                                <div class="holster-clip-body">
-                                    <div class="holster-arm"></div>
-                                    <div class="cup-holder">
-                                        <div class="cup">
-                                            <div class="cup-body">
-                                                <div class="beer-liquid"></div>
-                                                <div class="beer-foam">
-                                                    <div class="foam-bubble"></div>
-                                                    <div class="foam-bubble b2"></div>
-                                                    <div class="foam-bubble b3"></div>
+                <div class="product-gallery" id="beerGallery">
+                    <div class="gallery-main-wrap" id="beerMainWrap">
+                        <img class="gallery-main-img" id="beerMainImg" src="" alt="Beer Holster">
+                        <div class="gallery-fallback illus-beer" id="beerFallback">
+                            <div class="holster-scene">
+                                <div class="waistband">
+                                    <div class="fabric-texture"></div>
+                                    <div class="holster-mount">
+                                        <div class="holster-clip-body">
+                                            <div class="holster-arm"></div>
+                                            <div class="cup-holder">
+                                                <div class="cup">
+                                                    <div class="cup-body">
+                                                        <div class="beer-liquid"></div>
+                                                        <div class="beer-foam">
+                                                            <div class="foam-bubble"></div>
+                                                            <div class="foam-bubble b2"></div>
+                                                            <div class="foam-bubble b3"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cup-ring"></div>
                                                 </div>
                                             </div>
-                                            <div class="cup-ring"></div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="holster-label-tag">HOLSTER</div>
                             </div>
                         </div>
-                        <div class="holster-label-tag">HOLSTER</div>
+                        <button class="gallery-nav gallery-prev" data-gallery="beer" aria-label="Previous photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button class="gallery-nav gallery-next" data-gallery="beer" aria-label="Next photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                        <div class="gallery-counter" id="beerCounter"></div>
                     </div>
+                    <div class="gallery-thumbs" id="beerThumbs"></div>
                 </div>
             </div>
             <div class="product-scene-text">
@@ -400,6 +430,223 @@
         </div>
     </section>
 
+    <!-- ═══════════════════════════════════════════════════════ PRODUCT 5: EASEL PHONE STAND -->
+    <section class="product-scene product-scene--dark" id="product-easel">
+        <div class="product-scene-inner">
+            <div class="product-scene-text">
+                <span class="product-num reveal">05</span>
+                <h2 class="product-scene-title reveal">Adjustable<br>Easel<br>Phone Stand</h2>
+                <p class="product-scene-desc reveal">The perfect desk companion for your phone. Set it to exactly the angle you need — video calls, recipes, media, or bedside charging. Stable, cable-ready, and available in every color.</p>
+                <ul class="product-features reveal">
+                    <li><span class="feat-bullet"></span>Fully adjustable viewing angle</li>
+                    <li><span class="feat-bullet"></span>Compatible with most smartphones</li>
+                    <li><span class="feat-bullet"></span>Non-slip base stays firmly in place</li>
+                    <li><span class="feat-bullet"></span>Built-in cable management slot</li>
+                    <li><span class="feat-bullet"></span>Lightweight and portable</li>
+                    <li><span class="feat-bullet"></span>Available in many colors</li>
+                </ul>
+                <div class="product-scene-buttons reveal">
+                    <button class="btn btn--primary" onclick="openModal('easel')">View Details</button>
+                    <a href="https://www.etsy.com/shop/LudicrousCreations" target="_blank" class="btn btn--ghost">Buy on Etsy ↗</a>
+                </div>
+            </div>
+            <div class="product-scene-visual reveal">
+                <div class="product-gallery" id="easelGallery">
+                    <div class="gallery-main-wrap" id="easelMainWrap">
+                        <img class="gallery-main-img" id="easelMainImg" src="" alt="Adjustable Easel Phone Stand">
+                        <button class="gallery-nav gallery-prev" data-gallery="easel" aria-label="Previous photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button class="gallery-nav gallery-next" data-gallery="easel" aria-label="Next photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                        <div class="gallery-counter" id="easelCounter"></div>
+                    </div>
+                    <div class="gallery-thumbs" id="easelThumbs"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ PRODUCT 6: ARCADE WATCH STAND -->
+    <section class="product-scene product-scene--light" id="product-arcadewatch">
+        <div class="product-scene-inner product-scene-inner--flip">
+            <div class="product-scene-visual reveal">
+                <div class="product-gallery" id="arcadewatchGallery">
+                    <div class="gallery-main-wrap" id="arcadewatchMainWrap">
+                        <img class="gallery-main-img" id="arcadewatchMainImg" src="" alt="Mini Arcade Cabinet Apple Watch Stand">
+                        <button class="gallery-nav gallery-prev" data-gallery="arcadewatch" aria-label="Previous photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button class="gallery-nav gallery-next" data-gallery="arcadewatch" aria-label="Next photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                        <div class="gallery-counter" id="arcadewatchCounter"></div>
+                    </div>
+                    <div class="gallery-thumbs" id="arcadewatchThumbs"></div>
+                </div>
+            </div>
+            <div class="product-scene-text">
+                <span class="product-num reveal">06</span>
+                <h2 class="product-scene-title reveal">Mini Arcade<br>Cabinet<br>Apple Watch Stand</h2>
+                <p class="product-scene-desc reveal">Level up your charging station. This full mini arcade cabinet gives your Apple Watch the most epic charging home imaginable — complete with detailed cabinet design and your watch face as the game screen.</p>
+                <ul class="product-features reveal">
+                    <li><span class="feat-bullet"></span>Full arcade cabinet form factor</li>
+                    <li><span class="feat-bullet"></span>Fits Apple Watch Series 1–10, 38–45mm</li>
+                    <li><span class="feat-bullet"></span>Watch face displays as the game screen</li>
+                    <li><span class="feat-bullet"></span>Built-in wire routing hides cables</li>
+                    <li><span class="feat-bullet"></span>Bold retro gaming aesthetic</li>
+                    <li><span class="feat-bullet"></span>Available in multiple colors</li>
+                </ul>
+                <div class="product-scene-buttons reveal">
+                    <button class="btn btn--primary-dark" onclick="openModal('arcadewatch')">View Details</button>
+                    <a href="https://www.etsy.com/shop/LudicrousCreations" target="_blank" class="btn btn--ghost-dark">Buy on Etsy ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ PRODUCT 7: RUBBER DUCK KEYCAP -->
+    <section class="product-scene product-scene--dark" id="product-rubberduck">
+        <div class="product-scene-inner">
+            <div class="product-scene-text">
+                <span class="product-num reveal">07</span>
+                <h2 class="product-scene-title reveal">Rubber Duck<br>Keycap</h2>
+                <p class="product-scene-desc reveal">The ultimate accent key for your mechanical keyboard. A precision-printed rubber duck that fits any Cherry MX switch — a nod to the debugging tradition, a statement for your setup, and a perfect gift for the developer in your life.</p>
+                <ul class="product-features reveal">
+                    <li><span class="feat-bullet"></span>Fits Cherry MX and MX-compatible switches</li>
+                    <li><span class="feat-bullet"></span>High-detail rubber duck sculpt</li>
+                    <li><span class="feat-bullet"></span>Perfect accent key for any keyboard build</li>
+                    <li><span class="feat-bullet"></span>Great gift for developers and coders</li>
+                    <li><span class="feat-bullet"></span>Available in classic yellow and other colors</li>
+                    <li><span class="feat-bullet"></span>A nod to the rubber duck debugging tradition</li>
+                </ul>
+                <div class="product-scene-buttons reveal">
+                    <button class="btn btn--primary" onclick="openModal('rubberduck')">View Details</button>
+                    <a href="https://www.etsy.com/shop/LudicrousCreations" target="_blank" class="btn btn--ghost">Buy on Etsy ↗</a>
+                </div>
+            </div>
+            <div class="product-scene-visual reveal">
+                <div class="product-gallery" id="rubberduckGallery">
+                    <div class="gallery-main-wrap" id="rubberduckMainWrap">
+                        <img class="gallery-main-img" id="rubberduckMainImg" src="" alt="Rubber Duck Keycap">
+                        <button class="gallery-nav gallery-prev" data-gallery="rubberduck" aria-label="Previous photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button class="gallery-nav gallery-next" data-gallery="rubberduck" aria-label="Next photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                        <div class="gallery-counter" id="rubberduckCounter"></div>
+                    </div>
+                    <div class="gallery-thumbs" id="rubberduckThumbs"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ PRODUCT 8: CABLE ORGANIZER -->
+    <section class="product-scene product-scene--light" id="product-cable">
+        <div class="product-scene-inner product-scene-inner--flip">
+            <div class="product-scene-visual reveal">
+                <div class="product-gallery" id="cableGallery">
+                    <div class="gallery-main-wrap" id="cableMainWrap">
+                        <img class="gallery-main-img" id="cableMainImg" src="" alt="Cable Organizer">
+                        <button class="gallery-nav gallery-prev" data-gallery="cable" aria-label="Previous photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <button class="gallery-nav gallery-next" data-gallery="cable" aria-label="Next photo">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                        <div class="gallery-counter" id="cableCounter"></div>
+                    </div>
+                    <div class="gallery-thumbs" id="cableThumbs"></div>
+                </div>
+            </div>
+            <div class="product-scene-text">
+                <span class="product-num reveal">08</span>
+                <h2 class="product-scene-title reveal">Cable<br>Organizer</h2>
+                <p class="product-scene-desc reveal">End cable chaos. This desk-edge clip routes all your cables through a single clean channel — USB, USB-C, Lightning, HDMI, whatever you've got. No tools. No adhesive. Just a desk that finally looks the way it should.</p>
+                <ul class="product-features reveal">
+                    <li><span class="feat-bullet"></span>Clips onto desk edge — no tools needed</li>
+                    <li><span class="feat-bullet"></span>Routes multiple cable types cleanly</li>
+                    <li><span class="feat-bullet"></span>Compatible with all standard cable types</li>
+                    <li><span class="feat-bullet"></span>Clean, minimal design for any setup</li>
+                    <li><span class="feat-bullet"></span>Durable PLA stays put all day</li>
+                    <li><span class="feat-bullet"></span>Multiple colors available</li>
+                </ul>
+                <div class="product-scene-buttons reveal">
+                    <button class="btn btn--primary-dark" onclick="openModal('cable')">View Details</button>
+                    <a href="https://www.etsy.com/shop/LudicrousCreations" target="_blank" class="btn btn--ghost-dark">Buy on Etsy ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ CUSTOMER REVIEWS -->
+    <section class="reviews-section">
+        <div class="reviews-inner">
+            <p class="section-eyebrow reveal">Customer Reviews</p>
+            <h2 class="section-title reveal">What customers<br>are saying.</h2>
+            <div class="reviews-stats reveal">
+                <div class="reviews-overall">
+                    <div class="reviews-score">5.0</div>
+                    <div class="reviews-stars">★★★★★</div>
+                    <div class="reviews-count">1,100+ reviews on Etsy</div>
+                </div>
+            </div>
+            <div class="reviews-grid reveal">
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Absolutely love this! The mini TV watch charger is the most creative thing on my desk. The little fidget knob is also surprisingly satisfying. Fast shipping and great quality!"</p>
+                    <div class="review-meta">
+                        <span class="review-name">Sarah M.</span>
+                        <span class="review-product">Mini TV Apple Watch Charger</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Bought this for my husband who works from home. He uses it every single video call now — his coworkers always ask where he got it. Genius little invention."</p>
+                    <div class="review-meta">
+                        <span class="review-name">Jennifer K.</span>
+                        <span class="review-product">Webcam Projector</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Wore the beer holster at our 4th of July BBQ and everyone needed one. Zero spills all day, even running after the kids. Already ordered three more as gifts."</p>
+                    <div class="review-meta">
+                        <span class="review-name">Chris W.</span>
+                        <span class="review-product">Beer Holster</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Such a simple idea but I can't believe I didn't have this before. Sanitizer is right there every time I get in the car. Put one in every family vehicle. Highly recommend!"</p>
+                    <div class="review-meta">
+                        <span class="review-name">Rachel B.</span>
+                        <span class="review-product">Hand Sanitizer Car Vent Holder</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"The arcade cabinet Apple Watch stand is even better in person. The detail on the print is incredible. My whole desk setup improved the moment I put it on there."</p>
+                    <div class="review-meta">
+                        <span class="review-name">Marcus T.</span>
+                        <span class="review-product">Mini Arcade Cabinet Apple Watch Stand</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Got the rubber duck keycap for my mechanical keyboard and it's become my favorite conversation starter. My team loves it during calls. Perfect quality and exactly as shown."</p>
+                    <div class="review-meta">
+                        <span class="review-name">Devon L.</span>
+                        <span class="review-product">Rubber Duck Keycap</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ═══════════════════════════════════════════════════════ PRODUCTS MENU / GRID -->
     <section class="products-grid-section">
         <div class="products-grid-inner">
@@ -407,18 +654,8 @@
             <h2 class="section-title reveal">Review the full lineup</h2>
             <div class="products-grid reveal">
                 <div class="product-card" onclick="openModal('arcade')">
-                    <div class="product-card-visual pc-arcade">
-                        <div class="pc-illus-arcade">
-                            <div class="pc-cabinet">
-                                <div class="pc-screen">
-                                    <div class="pc-watch-time">10:09</div>
-                                </div>
-                                <div class="pc-controls">
-                                    <div class="pc-joy"></div>
-                                    <div class="pc-btns"><span></span><span></span></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="product-card-visual pc-photo">
+                        <img src="Photo/AppleWatchStand/AppleTVWatchStand1.JPG" alt="Mini TV Apple Watch Charger">
                     </div>
                     <div class="product-card-body">
                         <h3>Mini TV Apple Watch Charger</h3>
@@ -427,14 +664,8 @@
                     </div>
                 </div>
                 <div class="product-card" onclick="openModal('webcam')">
-                    <div class="product-card-visual pc-webcam">
-                        <div class="pc-illus-webcam">
-                            <div class="pc-laptop">
-                                <div class="pc-screen"></div>
-                                <div class="pc-clip"><div class="pc-lens"></div></div>
-                                <div class="pc-base"></div>
-                            </div>
-                        </div>
+                    <div class="product-card-visual pc-photo">
+                        <img src="Photo/DocWebCam/DocWebCam1.JPG" alt="Webcam Projector">
                     </div>
                     <div class="product-card-body">
                         <h3>Webcam Projector</h3>
@@ -443,18 +674,8 @@
                     </div>
                 </div>
                 <div class="product-card" onclick="openModal('sanitizer')">
-                    <div class="product-card-visual pc-sanitizer">
-                        <div class="pc-illus-sanitizer">
-                            <div class="pc-vent">
-                                <div class="pc-slat"></div>
-                                <div class="pc-slat"></div>
-                                <div class="pc-slat"></div>
-                            </div>
-                            <div class="pc-bottle">
-                                <div class="pc-pump"></div>
-                                <div class="pc-body"></div>
-                            </div>
-                        </div>
+                    <div class="product-card-visual pc-photo">
+                        <img src="Photo/CarVentHandSanitizerHolder/HandSanitizerHolder.JPG" alt="Hand Sanitizer Holder">
                     </div>
                     <div class="product-card-body">
                         <h3>Hand Sanitizer Holder</h3>
@@ -463,20 +684,52 @@
                     </div>
                 </div>
                 <div class="product-card" onclick="openModal('beer')">
-                    <div class="product-card-visual pc-beer">
-                        <div class="pc-illus-beer">
-                            <div class="pc-belt"></div>
-                            <div class="pc-holster">
-                                <div class="pc-cup">
-                                    <div class="pc-liquid"></div>
-                                    <div class="pc-foam"></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="product-card-visual pc-photo">
+                        <img src="Photo/BeerHolster/BeerHolster1.JPG" alt="Beer Holster">
                     </div>
                     <div class="product-card-body">
                         <h3>Beer Holster</h3>
                         <p>Hands-free waistband beverage holder — works with any pants.</p>
+                        <button class="btn-link">Learn more ↗</button>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('easel')">
+                    <div class="product-card-visual pc-photo">
+                        <img src="Photo/EaselStand/EaselStand1.JPG" alt="Adjustable Easel Phone Stand">
+                    </div>
+                    <div class="product-card-body">
+                        <h3>Adjustable Easel Phone Stand</h3>
+                        <p>Fully adjustable desk stand for video calls, recipes, and media.</p>
+                        <button class="btn-link">Learn more ↗</button>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('arcadewatch')">
+                    <div class="product-card-visual pc-photo">
+                        <img src="Photo/ArcadeAppleWatchStand/ArcadeAppleWatchStand1.JPG" alt="Mini Arcade Cabinet Apple Watch Stand">
+                    </div>
+                    <div class="product-card-body">
+                        <h3>Mini Arcade Cabinet Apple Watch Stand</h3>
+                        <p>Level up your charging station with a full retro arcade cabinet.</p>
+                        <button class="btn-link">Learn more ↗</button>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('rubberduck')">
+                    <div class="product-card-visual pc-photo">
+                        <img src="Photo/RubberDuckKeyCap/RubberDuckKeyCap1.JPG" alt="Rubber Duck Keycap">
+                    </div>
+                    <div class="product-card-body">
+                        <h3>Rubber Duck Keycap</h3>
+                        <p>The ultimate accent key for any Cherry MX mechanical keyboard.</p>
+                        <button class="btn-link">Learn more ↗</button>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openModal('cable')">
+                    <div class="product-card-visual pc-photo">
+                        <img src="Photo/CableOrganizer/CableOrganizer1.JPG" alt="Cable Organizer">
+                    </div>
+                    <div class="product-card-body">
+                        <h3>Cable Organizer</h3>
+                        <p>Desk-edge clip that routes all your cables into one clean channel.</p>
                         <button class="btn-link">Learn more ↗</button>
                     </div>
                 </div>
@@ -497,7 +750,7 @@
                     <div class="stat-label">Five-Star Reviews</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">4</div>
+                    <div class="stat-number">8</div>
                     <div class="stat-label">Signature Products</div>
                 </div>
                 <div class="stat-card">
@@ -550,6 +803,10 @@
                         <li><a href="#product-webcam" onclick="openModal('webcam'); return false;">Webcam Projector</a></li>
                         <li><a href="#product-sanitizer" onclick="openModal('sanitizer'); return false;">Hand Sanitizer Holder</a></li>
                         <li><a href="#product-beer" onclick="openModal('beer'); return false;">Beer Holster</a></li>
+                        <li><a href="#product-easel" onclick="openModal('easel'); return false;">Adjustable Easel Phone Stand</a></li>
+                        <li><a href="#product-arcadewatch" onclick="openModal('arcadewatch'); return false;">Mini Arcade Cabinet Watch Stand</a></li>
+                        <li><a href="#product-rubberduck" onclick="openModal('rubberduck'); return false;">Rubber Duck Keycap</a></li>
+                        <li><a href="#product-cable" onclick="openModal('cable'); return false;">Cable Organizer</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

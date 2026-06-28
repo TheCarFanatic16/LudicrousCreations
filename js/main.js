@@ -41,6 +41,34 @@ const PRODUCT_IMAGES = {
         'Photo/BeerHolster/BeerHolster4.JPG',
         'Photo/BeerHolster/BeerHolster5.JPG',
     ],
+    easel: [
+        'Photo/EaselStand/EaselStand1.JPG',
+        'Photo/EaselStand/EaselStand2.JPG',
+        'Photo/EaselStand/EaselStand3.JPG',
+        'Photo/EaselStand/EaselStand4.JPG',
+        'Photo/EaselStand/EaselStand5.JPG',
+    ],
+    arcadewatch: [
+        'Photo/ArcadeAppleWatchStand/ArcadeAppleWatchStand1.JPG',
+        'Photo/ArcadeAppleWatchStand/ArcadeAppleWatchStand2.JPG',
+        'Photo/ArcadeAppleWatchStand/ArcadeAppleWatchStand3.JPG',
+        'Photo/ArcadeAppleWatchStand/ArcadeAppleWatchStand4.JPG',
+        'Photo/ArcadeAppleWatchStand/ArcadeAppleWatchStand5.JPG',
+    ],
+    rubberduck: [
+        'Photo/RubberDuckKeyCap/RubberDuckKeyCap1.JPG',
+        'Photo/RubberDuckKeyCap/RubberDuckKeyCap2.JPG',
+        'Photo/RubberDuckKeyCap/RubberDuckKeyCap3.JPG',
+        'Photo/RubberDuckKeyCap/RubberDuckKeyCap4.JPG',
+        'Photo/RubberDuckKeyCap/RubberDuckKeyCap5.JPG',
+    ],
+    cable: [
+        'Photo/CableOrganizer/CableOrganizer1.JPG',
+        'Photo/CableOrganizer/CableOrganizer2.JPG',
+        'Photo/CableOrganizer/CableOrganizer3.JPG',
+        'Photo/CableOrganizer/CableOrganizer4.JPG',
+        'Photo/CableOrganizer/CableOrganizer5.JPG',
+    ],
 };
 
 /* ── Gallery initialisation ─────────────────────────────────────── */
@@ -55,11 +83,74 @@ const PRODUCT_IMAGES = {
             images:   PRODUCT_IMAGES.arcade,
             current:  0,
         },
+        webcam: {
+            wrap: document.getElementById('webcamMainWrap'),
+            mainImg: document.getElementById('webcamMainImg'),
+            thumbs: document.getElementById('webcamThumbs'),
+            counter: document.getElementById('webcamCounter'),
+            fallback: document.getElementById('webcamFallback'),
+            images: PRODUCT_IMAGES.webcam,
+            current: 0,
+        },
+        sanitizer: {
+            wrap: document.getElementById('sanitizerMainWrap'),
+            mainImg: document.getElementById('sanitizerMainImg'),
+            thumbs: document.getElementById('sanitizerThumbs'),
+            counter: document.getElementById('sanitizerCounter'),
+            fallback: document.getElementById('sanitizerFallback'),
+            images: PRODUCT_IMAGES.sanitizer,
+            current: 0,
+        },
+        beer: {
+            wrap: document.getElementById('beerMainWrap'),
+            mainImg: document.getElementById('beerMainImg'),
+            thumbs: document.getElementById('beerThumbs'),
+            counter: document.getElementById('beerCounter'),
+            fallback: document.getElementById('beerFallback'),
+            images: PRODUCT_IMAGES.beer,
+            current: 0,
+        },
+        easel: {
+            wrap: document.getElementById('easelMainWrap'),
+            mainImg: document.getElementById('easelMainImg'),
+            thumbs: document.getElementById('easelThumbs'),
+            counter: document.getElementById('easelCounter'),
+            fallback: null,
+            images: PRODUCT_IMAGES.easel,
+            current: 0,
+        },
+        arcadewatch: {
+            wrap: document.getElementById('arcadewatchMainWrap'),
+            mainImg: document.getElementById('arcadewatchMainImg'),
+            thumbs: document.getElementById('arcadewatchThumbs'),
+            counter: document.getElementById('arcadewatchCounter'),
+            fallback: null,
+            images: PRODUCT_IMAGES.arcadewatch,
+            current: 0,
+        },
+        rubberduck: {
+            wrap: document.getElementById('rubberduckMainWrap'),
+            mainImg: document.getElementById('rubberduckMainImg'),
+            thumbs: document.getElementById('rubberduckThumbs'),
+            counter: document.getElementById('rubberduckCounter'),
+            fallback: null,
+            images: PRODUCT_IMAGES.rubberduck,
+            current: 0,
+        },
+        cable: {
+            wrap: document.getElementById('cableMainWrap'),
+            mainImg: document.getElementById('cableMainImg'),
+            thumbs: document.getElementById('cableThumbs'),
+            counter: document.getElementById('cableCounter'),
+            fallback: null,
+            images: PRODUCT_IMAGES.cable,
+            current: 0,
+        },
     };
 
     function initGallery(key) {
         const g = GALLERIES[key];
-        if (!g || !g.images || g.images.filter(Boolean).length === 0) return;
+        if (!g || !g.wrap || !g.images || g.images.filter(Boolean).length === 0) return;
 
         const validImgs = g.images.filter(Boolean);
         g.images = validImgs;
@@ -140,26 +231,34 @@ const PRODUCT_IMAGES = {
         });
     });
 
-    /* Keyboard support when gallery is in view */
+    /* Keyboard support — cycles the nearest visible gallery */
     document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft')  goToSlide('arcade', GALLERIES.arcade.current - 1);
-        if (e.key === 'ArrowRight') goToSlide('arcade', GALLERIES.arcade.current + 1);
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            const dir = e.key === 'ArrowLeft' ? -1 : 1;
+            const visibleKey = Object.keys(GALLERIES).find(key => {
+                const wrap = GALLERIES[key].wrap;
+                if (!wrap) return false;
+                const r = wrap.getBoundingClientRect();
+                return r.top < window.innerHeight * 0.75 && r.bottom > window.innerHeight * 0.25;
+            });
+            if (visibleKey) goToSlide(visibleKey, GALLERIES[visibleKey].current + dir);
+        }
     });
 
-    /* Touch/swipe support */
-    (function () {
-        const wrap = document.getElementById('arcadeMainWrap');
+    /* Touch/swipe support — all gallery wraps */
+    Object.keys(GALLERIES).forEach(key => {
+        const wrap = GALLERIES[key].wrap;
         if (!wrap) return;
         let startX = 0;
         wrap.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
         wrap.addEventListener('touchend', e => {
             const dx = e.changedTouches[0].clientX - startX;
             if (Math.abs(dx) > 40) {
-                dx < 0 ? goToSlide('arcade', GALLERIES.arcade.current + 1)
-                       : goToSlide('arcade', GALLERIES.arcade.current - 1);
+                dx < 0 ? goToSlide(key, GALLERIES[key].current + 1)
+                       : goToSlide(key, GALLERIES[key].current - 1);
             }
         }, { passive: true });
-    }());
+    });
 
     /* Init all galleries */
     Object.keys(GALLERIES).forEach(initGallery);
@@ -340,6 +439,98 @@ const PRODUCTS = {
         ],
         colors: ['#ff9f0a','#ffd60a','#ff3b30','#34c759','#007aff','#7b2ff7','#1c1c1e','#f5f5f7'],
         etsy:   'https://www.etsy.com/shop/LudicrousCreations',
+    },
+    easel: {
+        number: '05',
+        name:   'Adjustable Easel Phone Stand',
+        desc:   'A sleek 3D-printed easel stand that holds your phone at exactly the right angle for video calls, recipe following, media, or bedside charging. Adjustable, stable, and available in any color.',
+        features: [
+            'Fully adjustable viewing angle',
+            'Compatible with most smartphones (with or without a thin case)',
+            'Non-slip base — stays firmly in place',
+            'Built-in cable management slot for clean charging',
+            'Compact and lightweight — move it anywhere',
+            'Available in multiple colors to match any setup',
+        ],
+        specs: [
+            { label: 'Material',   value: '3D-Printed PLA' },
+            { label: 'Compatible', value: 'Most smartphones' },
+            { label: 'Angle',      value: 'Fully adjustable' },
+            { label: 'Colors',     value: 'Multiple options available' },
+            { label: 'Made In',    value: 'Royal Oak, Michigan' },
+            { label: 'Best For',   value: 'Desk, Kitchen, Bedside' },
+        ],
+        colors: ['#007aff','#7b2ff7','#34c759','#ff3b30','#ff9f0a','#1c1c1e','#f5f5f7','#5e5ce6'],
+        etsy: 'https://www.etsy.com/shop/LudicrousCreations',
+    },
+    arcadewatch: {
+        number: '06',
+        name:   'Mini Arcade Cabinet Apple Watch Stand',
+        desc:   'Level up from the mini TV — this stand takes the form of a full mini arcade cabinet. Detailed cabinet design gives your Apple Watch charging station serious retro gaming credentials.',
+        features: [
+            'Full mini arcade cabinet form factor',
+            'Compatible with Apple Watch Series 1–10, 38–45mm (not Ultra)',
+            'Apple Watch face displayed as the game screen',
+            'Built-in charger routing for clean cable management',
+            'Available in multiple bold colors',
+            'A true statement piece for any desk',
+        ],
+        specs: [
+            { label: 'Material',      value: '3D-Printed PLA' },
+            { label: 'Compatibility', value: 'Apple Watch Series 1–10, 38–45mm' },
+            { label: 'Not Compatible', value: 'Apple Watch Ultra' },
+            { label: 'Charger',       value: 'Standard Apple magnetic charger (not included)' },
+            { label: 'Colors',        value: 'Many options available' },
+            { label: 'Made In',       value: 'Royal Oak, Michigan' },
+        ],
+        colors: ['#ff3b30','#ffd60a','#34c759','#007aff','#7b2ff7','#1c1c1e','#f5f5f7','#ff9f0a'],
+        etsy: 'https://www.etsy.com/shop/LudicrousCreations',
+    },
+    rubberduck: {
+        number: '07',
+        name:   'Rubber Duck Keycap',
+        desc:   'A custom 3D-printed rubber duck keycap that turns any key on your mechanical keyboard into a statement. The perfect accent for keyboard enthusiasts and a nod to the rubber duck debugging tradition.',
+        features: [
+            'Fits Cherry MX and MX-compatible keyboard switches',
+            'High-detail rubber duck sculpt',
+            'Perfect accent key for any keyboard build',
+            'Great gift for developers, programmers, and keyboard fans',
+            'Available in classic yellow and many other colors',
+            'A nod to the rubber duck debugging tradition',
+        ],
+        specs: [
+            { label: 'Material',    value: '3D-Printed PLA' },
+            { label: 'Switch Type', value: 'Cherry MX & MX-compatible' },
+            { label: 'Profile',     value: 'Novelty / accent keycap' },
+            { label: 'Colors',      value: 'Multiple available' },
+            { label: 'Made In',     value: 'Royal Oak, Michigan' },
+            { label: 'Best For',    value: 'Mechanical keyboard enthusiasts' },
+        ],
+        colors: ['#ffd60a','#ff9f0a','#ff3b30','#007aff','#34c759','#7b2ff7','#1c1c1e','#f5f5f7'],
+        etsy: 'https://www.etsy.com/shop/LudicrousCreations',
+    },
+    cable: {
+        number: '08',
+        name:   'Cable Organizer',
+        desc:   'A clean 3D-printed cable organizer that clips to the edge of your desk and routes cables neatly out of sight. No tools. No adhesive. Just a tidy desk.',
+        features: [
+            'Clips onto desk edge — no tools, no screws, no adhesive',
+            'Routes multiple cables through a single organized channel',
+            'Compatible with USB, USB-C, Lightning, HDMI, and more',
+            'Keeps your desktop clean and professional',
+            'Durable PLA construction that stays put all day',
+            'Multiple colors to complement any desk',
+        ],
+        specs: [
+            { label: 'Material',   value: '3D-Printed PLA' },
+            { label: 'Mount Type', value: 'Desk edge clip — no tools needed' },
+            { label: 'Compatible', value: 'Any standard cable type' },
+            { label: 'Colors',     value: 'Multiple options available' },
+            { label: 'Made In',    value: 'Royal Oak, Michigan' },
+            { label: 'Best For',   value: 'Desk, home office, studio' },
+        ],
+        colors: ['#1c1c1e','#007aff','#7b2ff7','#34c759','#ff9f0a','#ff3b30','#f5f5f7','#5e5ce6'],
+        etsy: 'https://www.etsy.com/shop/LudicrousCreations',
     },
 };
 
