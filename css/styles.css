@@ -1,4 +1,4 @@
-/* ════════════════════════════════════════════════════════════════
+﻿/* ════════════════════════════════════════════════════════════════
    LUDICROUS CREATIONS — Apple-Inspired Stylesheet
    ════════════════════════════════════════════════════════════════ */
 
@@ -14,8 +14,8 @@
     --off-white:   #f5f5f7;
     --gray:        #86868b;
     --gray-light:  #d2d2d7;
-    --purple:      #7b2ff7;
-    --purple-glow: rgba(123,47,247,0.35);
+    --accent:      #f7941d;
+    --accent-glow: rgba(247,148,29,0.35);
     --blue:        #0071e3;
     --green:       #34c759;
     --amber:       #ff9f0a;
@@ -92,7 +92,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .nav-links a:hover { color: var(--white); }
 .nav-links .nav-cta {
     padding: 7px 18px;
-    background: var(--purple);
+    background: var(--accent);
     color: var(--white);
     border-radius: 980px;
     font-size: 13px;
@@ -183,7 +183,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .hero-orb--1 {
     width: 500px; height: 500px;
-    background: radial-gradient(circle, #7b2ff7 0%, transparent 70%);
+    background: radial-gradient(circle, #f7941d 0%, transparent 70%);
     top: -100px; left: -100px;
     animation-delay: 0s;
 }
@@ -215,7 +215,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .hero-eyebrow {
     font-size: 15px;
     font-weight: 500;
-    color: var(--purple);
+    color: var(--accent);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 20px;
@@ -227,7 +227,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     letter-spacing: -0.04em;
     color: var(--white);
     margin-bottom: 24px;
-    background: linear-gradient(135deg, #fff 30%, #a855f7 100%);
+    background: linear-gradient(135deg, #fff 30%, #ffaa44 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -318,7 +318,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     white-space: nowrap;
 }
 .btn--primary {
-    background: var(--purple);
+    background: var(--accent);
     color: var(--white);
 }
 .btn--primary:hover { background: #6920e0; transform: scale(0.98); }
@@ -347,7 +347,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .btn--large { padding: 16px 36px; font-size: 17px; }
 .btn-link {
     font-size: 14px;
-    color: var(--purple);
+    color: var(--accent);
     font-weight: 500;
     transition: opacity 0.2s;
     background: none;
@@ -361,7 +361,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--purple);
+    color: var(--accent);
     margin-bottom: 16px;
     display: block;
 }
@@ -382,7 +382,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     padding: var(--section-pad) 24px;
 }
 .pillars-inner { max-width: 1100px; margin: 0 auto; }
-.pillars-inner .section-eyebrow { color: var(--purple); }
+.pillars-inner .section-eyebrow { color: var(--accent); }
 .pillars-inner .section-title { color: var(--dark); }
 
 .pillars-grid {
@@ -400,7 +400,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .pillar-card:hover { transform: translateY(-4px); box-shadow: 0 8px 40px rgba(0,0,0,0.1); }
 .pillar-icon {
     width: 48px; height: 48px;
-    background: linear-gradient(135deg, #7b2ff7 0%, #a855f7 100%);
+    background: linear-gradient(135deg, #f7941d 0%, #ffaa44 100%);
     border-radius: 14px;
     display: flex;
     align-items: center;
@@ -433,7 +433,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     gap: 80px;
     align-items: start;
 }
-.history-text .section-eyebrow { color: var(--purple); }
+.history-text .section-eyebrow { color: var(--accent); }
 .history-text h2 {
     font-size: clamp(36px, 4.5vw, 54px);
     font-weight: 700;
@@ -456,7 +456,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     position: absolute;
     left: 12px; top: 20px; bottom: 20px;
     width: 2px;
-    background: linear-gradient(to bottom, var(--purple), transparent);
+    background: linear-gradient(to bottom, var(--accent), transparent);
 }
 .tl-item {
     position: relative;
@@ -467,16 +467,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     position: absolute;
     left: 5px; top: 5px;
     width: 16px; height: 16px;
-    background: var(--purple);
+    background: var(--accent);
     border-radius: 50%;
-    box-shadow: 0 0 12px var(--purple-glow);
+    box-shadow: 0 0 12px var(--accent-glow);
 }
 .tl-label {
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--purple);
+    color: var(--accent);
     display: block;
     margin-bottom: 6px;
 }
@@ -490,7 +490,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     padding: var(--section-pad) 24px;
     text-align: center;
 }
-.products-intro .section-eyebrow { color: var(--purple); }
+.products-intro .section-eyebrow { color: var(--accent); }
 .products-intro-title {
     font-size: clamp(40px, 6vw, 72px);
     font-weight: 700;
@@ -533,11 +533,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--purple);
+    color: var(--accent);
     display: block;
     margin-bottom: 16px;
 }
-.product-scene--light .product-num { color: var(--purple); }
+.product-scene--light .product-num { color: var(--accent); }
 
 .product-scene-title {
     font-size: clamp(36px, 4.5vw, 56px);
@@ -576,7 +576,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .feat-bullet {
     flex-shrink: 0;
     width: 6px; height: 6px;
-    background: var(--purple);
+    background: var(--accent);
     border-radius: 50%;
 }
 .product-scene-buttons {
@@ -617,7 +617,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .arcade-marquee {
     height: 32px;
-    background: linear-gradient(135deg, #7b2ff7, #a855f7);
+    background: linear-gradient(135deg, #f7941d, #ffaa44);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -729,7 +729,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .arcade-glow {
     position: absolute;
     inset: -30px;
-    background: radial-gradient(ellipse at center, var(--purple-glow) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
     pointer-events: none;
     animation: pulse-glow 3s ease-in-out infinite;
 }
@@ -832,7 +832,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .clip-body {
     width: 44px; height: 24px;
-    background: linear-gradient(135deg, #7b2ff7, #a855f7);
+    background: linear-gradient(135deg, #f7941d, #ffaa44);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -912,14 +912,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .clip-ring {
     width: 24px; height: 24px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #7b2ff7, #a855f7);
+    background: linear-gradient(135deg, #f7941d, #ffaa44);
     margin: 0 auto 8px;
 }
 .sanitizer-bottle { display: flex; flex-direction: column; align-items: center; }
 .bottle-top { display: flex; flex-direction: column; align-items: center; }
 .pump-head {
     width: 14px; height: 6px;
-    background: #7b2ff7;
+    background: #f7941d;
     border-radius: 3px;
 }
 .pump-neck {
@@ -1067,7 +1067,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     color: var(--dark);
 }
 .products-grid-inner { max-width: 1100px; margin: 0 auto; }
-.products-grid-inner .section-eyebrow { color: var(--purple); }
+.products-grid-inner .section-eyebrow { color: var(--accent); }
 .products-grid-inner .section-title { color: var(--dark); }
 
 .products-grid {
@@ -1166,7 +1166,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     top: -10px; left: 50%;
     transform: translateX(-50%);
     width: 24px; height: 14px;
-    background: linear-gradient(135deg, #7b2ff7, #a855f7);
+    background: linear-gradient(135deg, #f7941d, #ffaa44);
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -1209,7 +1209,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .pc-pump {
     width: 10px; height: 6px;
-    background: #7b2ff7;
+    background: #f7941d;
     border-radius: 3px;
 }
 .pc-bottle .pc-body {
@@ -1281,7 +1281,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .craft-inner { max-width: 1000px; margin: 0 auto; }
 .craft-header { margin-bottom: 64px; }
-.craft-header .section-eyebrow { color: var(--purple); }
+.craft-header .section-eyebrow { color: var(--accent); }
 .craft-header h2 {
     font-size: clamp(36px, 5vw, 56px);
     font-weight: 700;
@@ -1302,12 +1302,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     padding: 48px 24px;
     transition: background 0.3s;
 }
-.stat-card:hover { background: #1a1a28; }
+.stat-card:hover { background: #1a1612; }
 .stat-number {
     font-size: clamp(36px, 4vw, 52px);
     font-weight: 700;
     letter-spacing: -0.03em;
-    background: linear-gradient(135deg, #fff 0%, #a855f7 100%);
+    background: linear-gradient(135deg, #fff 0%, #ffaa44 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1347,7 +1347,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .cta-inner h2 em {
     font-style: normal;
-    background: linear-gradient(135deg, #a855f7, #7b2ff7);
+    background: linear-gradient(135deg, #ffaa44, #f7941d);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1405,7 +1405,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     color: var(--gray);
     transition: background 0.2s, color 0.2s;
 }
-.social-link:hover { background: var(--purple); color: var(--white); }
+.social-link:hover { background: var(--accent); color: var(--white); }
 .footer-cols {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1508,7 +1508,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--purple);
+    color: var(--accent);
     margin-bottom: 10px;
 }
 .modal-product-name {
@@ -1549,7 +1549,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .modal-feat-dot {
     flex-shrink: 0;
     width: 6px; height: 6px;
-    background: var(--purple);
+    background: var(--accent);
     border-radius: 50%;
     margin-top: 7px;
 }
@@ -1601,7 +1601,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     align-items: center;
     gap: 6px;
     padding: 13px 24px;
-    background: var(--purple);
+    background: var(--accent);
     color: var(--white);
     border-radius: 980px;
     font-size: 15px;
@@ -1670,7 +1670,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     pointer-events: none;
 }
 .modal-thumb:hover { opacity: 0.8; }
-.modal-thumb.active { opacity: 1; outline: 2px solid var(--purple); outline-offset: -2px; }
+.modal-thumb.active { opacity: 1; outline: 2px solid var(--accent); outline-offset: -2px; }
 
 /* ════════════════════════════════════════════════════════════════
    RESPONSIVE
@@ -1791,7 +1791,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--purple);
+    color: var(--accent);
     margin-bottom: 10px;
     display: block;
 }
@@ -1831,7 +1831,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     top: 7px;
     width: 5px;
     height: 5px;
-    background: var(--purple);
+    background: var(--accent);
     border-radius: 50%;
 }
 .pg-card-cta {
@@ -1901,7 +1901,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--purple);
+    color: var(--accent);
     display: block;
     margin-bottom: 14px;
 }
@@ -1943,7 +1943,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     padding: var(--section-pad) 24px;
 }
 .pp-features-inner { max-width: 1100px; margin: 0 auto; }
-.pp-features-inner .section-eyebrow { color: var(--purple); }
+.pp-features-inner .section-eyebrow { color: var(--accent); }
 .pp-features-inner h2 {
     font-size: clamp(30px, 4vw, 48px);
     font-weight: 700;
@@ -1965,7 +1965,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .pp-feat-icon {
     width: 40px; height: 40px;
-    background: linear-gradient(135deg, var(--purple), #a855f7);
+    background: linear-gradient(135deg, var(--accent), #ffaa44);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -1993,7 +1993,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     padding: var(--section-pad) 24px;
 }
 .pp-specs-inner { max-width: 900px; margin: 0 auto; }
-.pp-specs-inner .section-eyebrow { color: var(--purple); }
+.pp-specs-inner .section-eyebrow { color: var(--accent); }
 .pp-specs-inner h2 {
     font-size: clamp(28px, 3.5vw, 42px);
     font-weight: 700;
@@ -2030,7 +2030,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     padding: 80px 24px;
 }
 .pp-colors-inner { max-width: 900px; margin: 0 auto; }
-.pp-colors-inner .section-eyebrow { color: var(--purple); }
+.pp-colors-inner .section-eyebrow { color: var(--accent); }
 .pp-colors-inner h2 {
     font-size: clamp(26px, 3vw, 38px);
     font-weight: 700;
@@ -2064,7 +2064,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     padding: var(--section-pad) 24px;
 }
 .pp-related-inner { max-width: 1100px; margin: 0 auto; }
-.pp-related-inner .section-eyebrow { color: var(--purple); }
+.pp-related-inner .section-eyebrow { color: var(--accent); }
 .pp-related-inner h2 {
     font-size: clamp(26px, 3.5vw, 40px);
     font-weight: 700;
@@ -2263,8 +2263,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .gallery-thumb:hover { opacity: 0.75; transform: scale(1.05); }
 .gallery-thumb.active {
     opacity: 1;
-    border-color: var(--purple);
-    box-shadow: 0 0 0 1px var(--purple);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
 }
 
 /* Fade transition between images */
