@@ -9,7 +9,7 @@
    ════════════════════════════════════════════════════════════════ */
 (function () {
     try {
-        var NAMESPACE = 'ludicrous-creations-2f5ai9rw';
+        var NAMESPACE = 'ludicrous-creations-5ncv7efs';
         var today = new Date().toISOString().slice(0, 10); // UTC YYYY-MM-DD
         var url = 'https://abacus.jasoncameron.dev/hit/' + NAMESPACE + '/views-' + today;
         fetch(url, { mode: 'cors', keepalive: true }).catch(function () {});

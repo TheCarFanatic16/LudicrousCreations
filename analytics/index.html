@@ -18,6 +18,12 @@
     --accent:         #f7941d;   /* site accent orange */
     --accent-glow:    rgba(247,148,29,0.35);
     --accent-wash:    rgba(247,148,29,0.14);
+    /* Ordinal ramp for duration buckets — one hue, light -> dark, short -> long */
+    --bucket-1: rgba(247,148,29,0.28);
+    --bucket-2: rgba(247,148,29,0.46);
+    --bucket-3: rgba(247,148,29,0.64);
+    --bucket-4: rgba(247,148,29,0.82);
+    --bucket-5: rgba(247,148,29,1.0);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -125,10 +131,16 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 18px;
+    gap: 12px;
   }
   .card .card-head h2 {
     font-size: 15px;
     font-weight: 600;
+  }
+  .card .card-head .sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
   }
   .card .card-head .table-toggle {
     font: inherit;
@@ -139,6 +151,7 @@
     border-radius: 100px;
     padding: 5px 10px;
     cursor: pointer;
+    white-space: nowrap;
   }
   .card .card-head .table-toggle:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.25); }
 
@@ -246,6 +259,79 @@
     padding: 40px 0;
   }
 
+  /* ── Horizontal bar ranking (views by product) ─────────────── */
+  .hbars { display: flex; flex-direction: column; gap: 10px; }
+  .hbars.hidden { display: none; }
+  .hbar-row { display: grid; grid-template-columns: 200px 1fr 52px; align-items: center; gap: 10px; }
+  .hbar-row .hbar-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hbar-row .hbar-track {
+    position: relative;
+    height: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .hbar-row .hbar-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--accent);
+    border-radius: 4px;
+    min-width: 3px;
+  }
+  .hbar-row .hbar-value {
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+    text-align: right;
+  }
+
+  /* ── Stacked engagement bars (time on page by product) ───────── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .legend .lkey { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+  .legend .lswatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+  .hstack { display: flex; flex-direction: column; gap: 14px; }
+  .hstack.hidden { display: none; }
+  .estack-row { position: relative; display: grid; grid-template-columns: 200px 1fr 64px; align-items: center; gap: 10px; }
+  .estack-row .estack-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .estack-row .estack-avg {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .estack-track {
+    position: relative;
+    display: flex;
+    height: 22px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.05);
+  }
+  .estack-seg {
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+  }
+  .estack-seg + .estack-seg { margin-left: 2px; } /* surface gap between touching segments */
+
   footer.note {
     text-align: center;
     color: var(--text-muted);
@@ -255,7 +341,7 @@
 
   @media (max-width: 640px) {
     .kpi-row { grid-template-columns: 1fr; }
-    .x-axis span:nth-child(n) { writing-mode: vertical-rl; text-orientation: mixed; }
+    .hbar-row, .estack-row { grid-template-columns: 110px 1fr 44px; }
   }
 </style>
 </head>
@@ -297,56 +383,143 @@
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h2>Views by product</h2>
+          <div class="sub">All-time totals, all 8 products</div>
+        </div>
+        <button class="table-toggle" id="productTableToggle" aria-pressed="false">View as table</button>
+      </div>
+      <div class="hbars" id="productViewsChart">
+        <div class="state-msg" id="productStateMsg">Loading…</div>
+      </div>
+      <table class="data-table" id="productDataTable"></table>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h2>Time on page by product</h2>
+          <div class="sub">Share of visits by how long the page stayed open — the counter API can only tally +1s, so exact per-visit durations aren't available; each visit is bucketed instead.</div>
+        </div>
+        <button class="table-toggle" id="engagementTableToggle" aria-pressed="false">View as table</button>
+      </div>
+      <div class="legend" id="engagementLegend"></div>
+      <div class="hstack" id="engagementChart">
+        <div class="state-msg" id="engagementStateMsg">Loading…</div>
+      </div>
+      <table class="data-table" id="engagementDataTable"></table>
+    </div>
+
     <footer class="note">
-      Anonymous pageview counts only — no cookies, no personal data. Counter can take
-      a moment to update after a visit.
+      Anonymous pageview + engagement-bucket counts only — no cookies, no personal
+      data. Counters can take a moment to update after a visit, and durations are
+      approximate (bucketed, not exact seconds).
     </footer>
   </div>
 
 <script>
 (function () {
-  var NAMESPACE = 'ludicrous-creations-2f5ai9rw';
+  var NAMESPACE = 'ludicrous-creations-5ncv7efs';
   var API = 'https://abacus.jasoncameron.dev/get/' + NAMESPACE + '/';
 
-  var plot = document.getElementById('plot');
-  var stateMsg = document.getElementById('stateMsg');
-  var chartTitle = document.getElementById('chartTitle');
-  var tableToggle = document.getElementById('tableToggle');
-  var pills = Array.prototype.slice.call(document.querySelectorAll('.filters .pill'));
+  var PRODUCTS = [
+    { slug: 'arcade-watch',     name: 'Mini Arcade Cabinet Watch Stand' },
+    { slug: 'beer',             name: 'Beer Holster' },
+    { slug: 'cable-organizer',  name: 'Cable Organizer' },
+    { slug: 'easel',            name: 'Adjustable Easel Phone Stand' },
+    { slug: 'rubber-duck',      name: 'Rubber Duck Keycap' },
+    { slug: 'sanitizer',        name: 'Hand Sanitizer Car Vent Holder' },
+    { slug: 'tv-charger',       name: 'Mini TV Watch Charge Station' },
+    { slug: 'webcam',           name: 'Webcam Projector' }
+  ];
 
-  var currentRows = [];   // [{date, count}]
-  var showingTable = false;
+  var BUCKETS = [
+    { key: 'u30',     label: '< 30s',    mid: 15,  css: 'var(--bucket-1)' },
+    { key: 's30-60',  label: '30s – 1m', mid: 45,  css: 'var(--bucket-2)' },
+    { key: 'm1-3',    label: '1 – 3m',   mid: 120, css: 'var(--bucket-3)' },
+    { key: 'm3-10',   label: '3 – 10m',  mid: 390, css: 'var(--bucket-4)' },
+    { key: 'm10p',    label: '10m+',     mid: 900, css: 'var(--bucket-5)' }
+  ];
+
+  /* ── Rate-limit-safe fetch queue ──────────────────────────────
+     The counter API allows ~30 requests / 10s per IP. A dashboard
+     load can need 70-100+ reads (daily range + 8 products + 40
+     duration buckets), so ALL reads share one global queue with a
+     conservative concurrency cap — three independent per-chart queues
+     would combine to blow through the limit even if each looked safe
+     alone. 429s are retried (honoring Retry-After) rather than
+     silently counted as zero, since a wrong count defeats the point
+     of a dashboard. */
+  var GLOBAL_CONCURRENCY = 4;
+  var requestQueue = [];
+  var activeRequests = 0;
+
+  function fetchValue(url) {
+    return new Promise(function (resolve) {
+      requestQueue.push({ url: url, resolve: resolve });
+      pumpQueue();
+    });
+  }
+  function pumpQueue() {
+    while (activeRequests < GLOBAL_CONCURRENCY && requestQueue.length > 0) {
+      var item = requestQueue.shift();
+      activeRequests++;
+      fetchWithRetry(item.url, 0).then(function (item) {
+        return function (v) {
+          activeRequests--;
+          item.resolve(v);
+          pumpQueue();
+        };
+      }(item));
+    }
+  }
+  function fetchWithRetry(url, attempt) {
+    return fetch(url).then(function (r) {
+      if (r.status === 429 && attempt < 8) {
+        var retryAfter = parseFloat(r.headers.get('Retry-After')) || 2;
+        return new Promise(function (res) { setTimeout(res, (retryAfter + 0.3) * 1000); })
+          .then(function () { return fetchWithRetry(url, attempt + 1); });
+      }
+      if (!r.ok) return 0;
+      return r.json().then(function (j) { return j.value || 0; });
+    }).catch(function () { return 0; });
+  }
+  function fetchQueue(urls) {
+    return Promise.all(urls.map(fetchValue));
+  }
 
   function isoDate(d) { return d.toISOString().slice(0, 10); }
-
   function fmtLabel(dateStr) {
     var d = new Date(dateStr + 'T00:00:00Z');
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
   }
-
   function fmtCompact(n) {
     if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
     if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
     return String(n);
   }
-
-  function fetchDay(dateStr) {
-    return fetch(API + 'views-' + dateStr)
-      .then(function (r) { return r.ok ? r.json() : { value: 0 }; })
-      .then(function (j) { return { date: dateStr, count: j.value || 0 }; })
-      .catch(function () { return { date: dateStr, count: 0 }; });
+  function fmtDuration(totalSecs) {
+    if (totalSecs < 60) return Math.round(totalSecs) + 's';
+    var mins = totalSecs / 60;
+    if (mins < 60) return (mins >= 10 ? Math.round(mins) : Math.round(mins * 10) / 10) + 'm';
+    return Math.round(mins / 60 * 10) / 10 + 'h';
   }
+
+  /* ══════════════════════════════════════ Daily views (site-wide) */
+  var plot = document.getElementById('plot');
+  var chartTitle = document.getElementById('chartTitle');
+  var tableToggle = document.getElementById('tableToggle');
+  var pills = Array.prototype.slice.call(document.querySelectorAll('.filters .pill'));
+  var showingTable = false;
 
   function loadRange(days) {
     showingTable = false;
     tableToggle.setAttribute('aria-pressed', 'false');
     tableToggle.textContent = 'View as table';
     chartTitle.textContent = 'Daily views — last ' + days + ' days';
-    plot.innerHTML = '';
-    var msg = document.createElement('div');
-    msg.className = 'state-msg';
-    msg.textContent = 'Loading…';
-    plot.appendChild(msg);
+    plot.innerHTML = '<div class="state-msg">Loading…</div>';
 
     var today = new Date();
     var dates = [];
@@ -354,14 +527,14 @@
       var d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
       dates.push(isoDate(d));
     }
-
-    Promise.all(dates.map(fetchDay)).then(function (rows) {
-      currentRows = rows;
-      render(rows);
+    var urls = dates.map(function (d) { return API + 'views-' + d; });
+    fetchQueue(urls).then(function (values) {
+      var rows = dates.map(function (d, i) { return { date: d, count: values[i] }; });
+      renderDaily(rows);
     });
   }
 
-  function render(rows) {
+  function renderDaily(rows) {
     var total = rows.reduce(function (s, r) { return s + r.count; }, 0);
     var todayStr = isoDate(new Date());
     var todayRow = rows.filter(function (r) { return r.date === todayStr; })[0];
@@ -370,12 +543,8 @@
     document.getElementById('kpiAvg').textContent = fmtCompact(Math.round(total / rows.length));
 
     plot.innerHTML = '';
-
     if (total === 0) {
-      var empty = document.createElement('div');
-      empty.className = 'state-msg';
-      empty.textContent = 'No traffic recorded yet — views will appear here as visitors browse the site.';
-      plot.appendChild(empty);
+      plot.innerHTML = '<div class="state-msg">No traffic recorded yet — views will appear here as visitors browse the site.</div>';
       return;
     }
 
@@ -384,8 +553,6 @@
 
     var area = document.createElement('div');
     area.className = 'plot-area';
-
-    // gridlines at 0 / 1/2 / max, with y-axis tick labels
     [0, 0.5, 1].forEach(function (frac) {
       var line = document.createElement('div');
       line.className = 'gridline';
@@ -407,8 +574,7 @@
       var col = document.createElement('div');
       col.className = 'bar-col';
       var btn = document.createElement('button');
-      var label = fmtLabel(row.date) + ': ' + row.count + ' view' + (row.count === 1 ? '' : 's');
-      btn.setAttribute('aria-label', label);
+      btn.setAttribute('aria-label', fmtLabel(row.date) + ': ' + row.count + ' view' + (row.count === 1 ? '' : 's'));
       var bar = document.createElement('div');
       bar.className = 'bar';
       var pct = niceMax > 0 ? Math.max((row.count / niceMax) * 100, row.count > 0 ? 2 : 0) : 0;
@@ -426,21 +592,18 @@
         tooltip.classList.add('visible');
       }
       function hideTip() { tooltip.classList.remove('visible'); }
-
       btn.addEventListener('pointerenter', showTip);
       btn.addEventListener('pointermove', showTip);
       btn.addEventListener('pointerleave', hideTip);
       btn.addEventListener('focus', showTip);
       btn.addEventListener('blur', hideTip);
-
       area.appendChild(col);
     });
-
     plot.appendChild(area);
 
     var xAxis = document.createElement('div');
     xAxis.className = 'x-axis';
-    var step = Math.ceil(rows.length / 10); // thin labels so they don't collide
+    var step = Math.ceil(rows.length / 10);
     rows.forEach(function (row, i) {
       var span = document.createElement('span');
       span.textContent = (i % step === 0 || i === rows.length - 1) ? fmtLabel(row.date) : '';
@@ -448,31 +611,20 @@
     });
     plot.appendChild(xAxis);
 
-    var table = buildTable(rows);
-    plot.appendChild(table);
-  }
-
-  function buildTable(rows) {
     var table = document.createElement('table');
     table.className = 'data-table' + (showingTable ? ' visible' : '');
     table.id = 'dataTable';
-    var thead = document.createElement('thead');
-    thead.innerHTML = '<tr><th>Date</th><th class="num">Views</th></tr>';
-    table.appendChild(thead);
+    table.innerHTML = '<thead><tr><th>Date</th><th class="num">Views</th></tr></thead>';
     var tbody = document.createElement('tbody');
     rows.slice().reverse().forEach(function (row) {
       var tr = document.createElement('tr');
-      var tdDate = document.createElement('td');
-      tdDate.textContent = fmtLabel(row.date);
-      var tdVal = document.createElement('td');
-      tdVal.className = 'num';
-      tdVal.textContent = String(row.count);
-      tr.appendChild(tdDate);
-      tr.appendChild(tdVal);
+      var td1 = document.createElement('td'); td1.textContent = fmtLabel(row.date);
+      var td2 = document.createElement('td'); td2.className = 'num'; td2.textContent = String(row.count);
+      tr.appendChild(td1); tr.appendChild(td2);
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);
-    return table;
+    plot.appendChild(table);
   }
 
   function niceCeiling(max) {
@@ -503,7 +655,220 @@
     });
   });
 
+  /* ══════════════════════════════════════ Views by product */
+  var productChart = document.getElementById('productViewsChart');
+  var productTable = document.getElementById('productDataTable');
+  var productTableToggle = document.getElementById('productTableToggle');
+  var showingProductTable = false;
+
+  function loadProductViews() {
+    var urls = PRODUCTS.map(function (p) { return API + 'product-views-' + p.slug; });
+    fetchQueue(urls).then(function (values) {
+      var rows = PRODUCTS.map(function (p, i) { return { slug: p.slug, name: p.name, count: values[i] }; });
+      renderProductViews(rows);
+    });
+  }
+
+  function renderProductViews(rows) {
+    var total = rows.reduce(function (s, r) { return s + r.count; }, 0);
+    productChart.innerHTML = '';
+    if (total === 0) {
+      productChart.innerHTML = '<div class="state-msg">No product views recorded yet.</div>';
+      productTable.innerHTML = '';
+      return;
+    }
+    var sorted = rows.slice().sort(function (a, b) { return b.count - a.count; });
+    var max = Math.max.apply(null, sorted.map(function (r) { return r.count; }));
+
+    sorted.forEach(function (row) {
+      var wrap = document.createElement('div');
+      wrap.className = 'hbar-row';
+      var label = document.createElement('div');
+      label.className = 'hbar-label';
+      label.textContent = row.name;
+      var track = document.createElement('div');
+      track.className = 'hbar-track';
+      var fill = document.createElement('div');
+      fill.className = 'hbar-fill';
+      var pct = max > 0 ? Math.max((row.count / max) * 100, row.count > 0 ? 1.5 : 0) : 0;
+      fill.style.width = pct + '%';
+      track.appendChild(fill);
+      var value = document.createElement('div');
+      value.className = 'hbar-value';
+      value.textContent = fmtCompact(row.count);
+      wrap.appendChild(label);
+      wrap.appendChild(track);
+      wrap.appendChild(value);
+      productChart.appendChild(wrap);
+    });
+
+    productTable.innerHTML = '<thead><tr><th>Product</th><th class="num">Views</th></tr></thead>';
+    var tbody = document.createElement('tbody');
+    sorted.forEach(function (row) {
+      var tr = document.createElement('tr');
+      var td1 = document.createElement('td'); td1.textContent = row.name;
+      var td2 = document.createElement('td'); td2.className = 'num'; td2.textContent = String(row.count);
+      tr.appendChild(td1); tr.appendChild(td2);
+      tbody.appendChild(tr);
+    });
+    productTable.appendChild(tbody);
+    productTable.classList.toggle('visible', showingProductTable);
+  }
+
+  productTableToggle.addEventListener('click', function () {
+    showingProductTable = !showingProductTable;
+    productTableToggle.setAttribute('aria-pressed', String(showingProductTable));
+    productTableToggle.textContent = showingProductTable ? 'View as chart' : 'View as table';
+    productChart.classList.toggle('hidden', showingProductTable);
+    productTable.classList.toggle('visible', showingProductTable);
+  });
+
+  /* ══════════════════════════════════════ Time on page by product */
+  var engagementChart = document.getElementById('engagementChart');
+  var engagementTable = document.getElementById('engagementDataTable');
+  var engagementTableToggle = document.getElementById('engagementTableToggle');
+  var engagementLegend = document.getElementById('engagementLegend');
+  var showingEngagementTable = false;
+
+  BUCKETS.forEach(function (b) {
+    var key = document.createElement('div');
+    key.className = 'lkey';
+    var sw = document.createElement('span');
+    sw.className = 'lswatch';
+    sw.style.background = b.css;
+    var txt = document.createElement('span');
+    txt.textContent = b.label;
+    key.appendChild(sw);
+    key.appendChild(txt);
+    engagementLegend.appendChild(key);
+  });
+
+  function loadEngagement() {
+    var urls = [];
+    PRODUCTS.forEach(function (p) {
+      BUCKETS.forEach(function (b) { urls.push(API + 'product-time-' + p.slug + '-' + b.key); });
+    });
+    fetchQueue(urls).then(function (values) {
+      var rows = PRODUCTS.map(function (p, pi) {
+        var counts = BUCKETS.map(function (b, bi) { return values[pi * BUCKETS.length + bi]; });
+        return { slug: p.slug, name: p.name, counts: counts };
+      });
+      renderEngagement(rows);
+    });
+  }
+
+  function renderEngagement(rows) {
+    var grandTotal = rows.reduce(function (s, r) { return s + r.counts.reduce(function (a, b) { return a + b; }, 0); }, 0);
+    engagementChart.innerHTML = '';
+    if (grandTotal === 0) {
+      engagementChart.innerHTML = '<div class="state-msg">No completed visits recorded yet — buckets fill in once visitors leave a product page.</div>';
+      engagementTable.innerHTML = '';
+      return;
+    }
+
+    var sorted = rows.slice().sort(function (a, b) {
+      var ta = a.counts.reduce(function (s, c) { return s + c; }, 0);
+      var tb = b.counts.reduce(function (s, c) { return s + c; }, 0);
+      return tb - ta;
+    });
+
+    sorted.forEach(function (row) {
+      var rowTotal = row.counts.reduce(function (s, c) { return s + c; }, 0);
+      var wrap = document.createElement('div');
+      wrap.className = 'estack-row';
+      var label = document.createElement('div');
+      label.className = 'estack-label';
+      label.textContent = row.name;
+      var track = document.createElement('div');
+      track.className = 'estack-track';
+      track.style.position = 'relative';
+
+      var tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      tooltip.innerHTML = '<div class="tt-value"></div><div class="tt-date"></div>';
+      wrap.appendChild(tooltip);
+
+      if (rowTotal === 0) {
+        track.style.background = 'rgba(255,255,255,0.05)';
+      } else {
+        BUCKETS.forEach(function (b, i) {
+          var c = row.counts[i];
+          if (c <= 0) return;
+          var seg = document.createElement('div');
+          seg.className = 'estack-seg';
+          seg.style.width = ((c / rowTotal) * 100) + '%';
+          seg.style.background = b.css;
+          seg.tabIndex = 0;
+          seg.setAttribute('aria-label', row.name + ', ' + b.label + ': ' + c + ' visit' + (c === 1 ? '' : 's'));
+          function showTip() {
+            tooltip.querySelector('.tt-value').textContent = c + ' visit' + (c === 1 ? '' : 's') + ' (' + Math.round((c / rowTotal) * 100) + '%)';
+            tooltip.querySelector('.tt-date').textContent = b.label;
+            var segRect = seg.getBoundingClientRect();
+            var wrapRect = wrap.getBoundingClientRect();
+            tooltip.style.left = (segRect.left - wrapRect.left + segRect.width / 2) + 'px';
+            tooltip.style.top = (segRect.top - wrapRect.top) + 'px';
+            tooltip.classList.add('visible');
+          }
+          function hideTip() { tooltip.classList.remove('visible'); }
+          seg.addEventListener('pointerenter', showTip);
+          seg.addEventListener('pointermove', showTip);
+          seg.addEventListener('pointerleave', hideTip);
+          seg.addEventListener('focus', showTip);
+          seg.addEventListener('blur', hideTip);
+          track.appendChild(seg);
+        });
+      }
+
+      var avg = document.createElement('div');
+      avg.className = 'estack-avg';
+      if (rowTotal > 0) {
+        var weighted = row.counts.reduce(function (s, c, i) { return s + c * BUCKETS[i].mid; }, 0) / rowTotal;
+        avg.textContent = '~' + fmtDuration(weighted);
+      } else {
+        avg.textContent = '—';
+      }
+
+      wrap.appendChild(label);
+      wrap.appendChild(track);
+      wrap.appendChild(avg);
+      engagementChart.appendChild(wrap);
+    });
+
+    engagementTable.innerHTML = '<thead><tr><th>Product</th>' +
+      BUCKETS.map(function (b) { return '<th class="num">' + b.label + '</th>'; }).join('') +
+      '<th class="num">~Avg</th></tr></thead>';
+    var tbody = document.createElement('tbody');
+    sorted.forEach(function (row) {
+      var rowTotal = row.counts.reduce(function (s, c) { return s + c; }, 0);
+      var tr = document.createElement('tr');
+      var td1 = document.createElement('td'); td1.textContent = row.name;
+      tr.appendChild(td1);
+      row.counts.forEach(function (c) {
+        var td = document.createElement('td'); td.className = 'num'; td.textContent = String(c);
+        tr.appendChild(td);
+      });
+      var tdAvg = document.createElement('td'); tdAvg.className = 'num';
+      tdAvg.textContent = rowTotal > 0
+        ? '~' + fmtDuration(row.counts.reduce(function (s, c, i) { return s + c * BUCKETS[i].mid; }, 0) / rowTotal)
+        : '—';
+      tr.appendChild(tdAvg);
+      tbody.appendChild(tr);
+    });
+    engagementTable.appendChild(tbody);
+    engagementTable.classList.toggle('visible', showingEngagementTable);
+  }
+
+  engagementTableToggle.addEventListener('click', function () {
+    showingEngagementTable = !showingEngagementTable;
+    engagementTableToggle.setAttribute('aria-pressed', String(showingEngagementTable));
+    engagementTableToggle.textContent = showingEngagementTable ? 'View as chart' : 'View as table';
+    engagementChart.classList.toggle('hidden', showingEngagementTable);
+    engagementTable.classList.toggle('visible', showingEngagementTable);
+  });
+
   loadRange(30);
+  loadProductViews();
+  loadEngagement();
 })();
 </script>
 </body>
