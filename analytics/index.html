@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Analytics — LudicrousCreations</title>
+<style>
+  .viz-root {
+    color-scheme: dark;
+    --surface-1:      #111118;   /* dark-card, matches site chrome */
+    --page-plane:     #0a0a0f;   /* dark */
+    --text-primary:   #f5f5f7;   /* off-white */
+    --text-secondary: #d2d2d7;   /* gray-light */
+    --text-muted:     #86868b;   /* gray */
+    --border:         rgba(255,255,255,0.1);
+    --grid:           rgba(255,255,255,0.08);
+    --accent:         #f7941d;   /* site accent orange */
+    --accent-glow:    rgba(247,148,29,0.35);
+    --accent-wash:    rgba(247,148,29,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; }
+
+  body.viz-root {
+    background: var(--page-plane);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+                 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding: 40px 24px 80px;
+  }
+
+  .wrap { max-width: 980px; margin: 0 auto; }
+
+  header.page-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  header.page-head h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+  header.page-head .badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 10px;
+  }
+
+  /* ── Filter row ─────────────────────────────────────────────── */
+  .filters {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .filters .pill {
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .filters .pill:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
+  .filters .pill[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #1a1200;
+  }
+
+  /* ── KPI row ────────────────────────────────────────────────── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-tile {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .stat-tile .label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .stat-tile .value {
+    font-size: 30px;
+    font-weight: 600;
+    font-variant-numeric: proportional-nums;
+    letter-spacing: -0.5px;
+  }
+
+  /* ── Chart card ─────────────────────────────────────────────── */
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 22px 16px;
+    margin-bottom: 16px;
+  }
+  .card .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .card .card-head h2 {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .card .card-head .table-toggle {
+    font: inherit;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  .card .card-head .table-toggle:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.25); }
+
+  .plot { position: relative; }
+  .plot-area {
+    position: relative;
+    height: 220px;
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    border-bottom: 1px solid var(--grid);
+  }
+  .plot-area .gridline {
+    position: absolute;
+    left: 0; right: 0;
+    border-top: 1px solid var(--grid);
+    pointer-events: none;
+  }
+  .plot-area .ytick {
+    position: absolute;
+    left: 0;
+    font-size: 10px;
+    color: var(--text-muted);
+    transform: translateY(-100%);
+    padding-bottom: 2px;
+  }
+  .bar-col {
+    flex: 1 1 0;
+    max-width: 24px;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+  }
+  .bar-col button {
+    font: inherit;
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+  }
+  .bar {
+    width: 100%;
+    min-height: 3px;
+    background: var(--accent);
+    border-radius: 4px 4px 0 0;
+    transition: opacity 0.1s;
+  }
+  .bar-col button:hover .bar,
+  .bar-col button:focus-visible .bar { opacity: 0.75; }
+  .bar-col button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .x-axis {
+    display: flex;
+    gap: 2px;
+    margin-top: 6px;
+  }
+  .x-axis span {
+    flex: 1 1 0;
+    max-width: 24px;
+    font-size: 9px;
+    color: var(--text-muted);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .tooltip {
+    position: absolute;
+    z-index: 10;
+    background: #1c1c24;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    pointer-events: none;
+    white-space: nowrap;
+    transform: translate(-50%, -100%);
+    margin-top: -8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    display: none;
+  }
+  .tooltip.visible { display: block; }
+  .tooltip .tt-value { font-weight: 700; color: var(--text-primary); }
+  .tooltip .tt-date { color: var(--text-muted); margin-top: 2px; }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; display: none; }
+  .data-table.visible { display: table; }
+  .data-table th, .data-table td {
+    text-align: left;
+    padding: 7px 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table th { color: var(--text-muted); font-weight: 500; }
+  .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+
+  .state-msg {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 40px 0;
+  }
+
+  footer.note {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 640px) {
+    .kpi-row { grid-template-columns: 1fr; }
+    .x-axis span:nth-child(n) { writing-mode: vertical-rl; text-orientation: mixed; }
+  }
+</style>
+</head>
+<body class="viz-root">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>LudicrousCreations — Analytics</h1>
+      <span class="badge">Internal · not linked from the site</span>
+    </header>
+
+    <div class="filters" role="group" aria-label="Date range">
+      <button class="pill" data-days="7" aria-pressed="false">Last 7 days</button>
+      <button class="pill" data-days="14" aria-pressed="false">Last 14 days</button>
+      <button class="pill" data-days="30" aria-pressed="true">Last 30 days</button>
+    </div>
+
+    <div class="kpi-row">
+      <div class="stat-tile">
+        <div class="label">Total views (range)</div>
+        <div class="value" id="kpiTotal">—</div>
+      </div>
+      <div class="stat-tile">
+        <div class="label">Today</div>
+        <div class="value" id="kpiToday">—</div>
+      </div>
+      <div class="stat-tile">
+        <div class="label">Average / day</div>
+        <div class="value" id="kpiAvg">—</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2 id="chartTitle">Daily views — last 30 days</h2>
+        <button class="table-toggle" id="tableToggle" aria-pressed="false">View as table</button>
+      </div>
+      <div class="plot" id="plot">
+        <div class="state-msg" id="stateMsg">Loading…</div>
+      </div>
+    </div>
+
+    <footer class="note">
+      Anonymous pageview counts only — no cookies, no personal data. Counter can take
+      a moment to update after a visit.
+    </footer>
+  </div>
+
+<script>
+(function () {
+  var NAMESPACE = 'ludicrous-creations-2f5ai9rw';
+  var API = 'https://abacus.jasoncameron.dev/get/' + NAMESPACE + '/';
+
+  var plot = document.getElementById('plot');
+  var stateMsg = document.getElementById('stateMsg');
+  var chartTitle = document.getElementById('chartTitle');
+  var tableToggle = document.getElementById('tableToggle');
+  var pills = Array.prototype.slice.call(document.querySelectorAll('.filters .pill'));
+
+  var currentRows = [];   // [{date, count}]
+  var showingTable = false;
+
+  function isoDate(d) { return d.toISOString().slice(0, 10); }
+
+  function fmtLabel(dateStr) {
+    var d = new Date(dateStr + 'T00:00:00Z');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+  }
+
+  function fmtCompact(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    return String(n);
+  }
+
+  function fetchDay(dateStr) {
+    return fetch(API + 'views-' + dateStr)
+      .then(function (r) { return r.ok ? r.json() : { value: 0 }; })
+      .then(function (j) { return { date: dateStr, count: j.value || 0 }; })
+      .catch(function () { return { date: dateStr, count: 0 }; });
+  }
+
+  function loadRange(days) {
+    showingTable = false;
+    tableToggle.setAttribute('aria-pressed', 'false');
+    tableToggle.textContent = 'View as table';
+    chartTitle.textContent = 'Daily views — last ' + days + ' days';
+    plot.innerHTML = '';
+    var msg = document.createElement('div');
+    msg.className = 'state-msg';
+    msg.textContent = 'Loading…';
+    plot.appendChild(msg);
+
+    var today = new Date();
+    var dates = [];
+    for (var i = days - 1; i >= 0; i--) {
+      var d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
+      dates.push(isoDate(d));
+    }
+
+    Promise.all(dates.map(fetchDay)).then(function (rows) {
+      currentRows = rows;
+      render(rows);
+    });
+  }
+
+  function render(rows) {
+    var total = rows.reduce(function (s, r) { return s + r.count; }, 0);
+    var todayStr = isoDate(new Date());
+    var todayRow = rows.filter(function (r) { return r.date === todayStr; })[0];
+    document.getElementById('kpiTotal').textContent = fmtCompact(total);
+    document.getElementById('kpiToday').textContent = fmtCompact(todayRow ? todayRow.count : 0);
+    document.getElementById('kpiAvg').textContent = fmtCompact(Math.round(total / rows.length));
+
+    plot.innerHTML = '';
+
+    if (total === 0) {
+      var empty = document.createElement('div');
+      empty.className = 'state-msg';
+      empty.textContent = 'No traffic recorded yet — views will appear here as visitors browse the site.';
+      plot.appendChild(empty);
+      return;
+    }
+
+    var max = Math.max.apply(null, rows.map(function (r) { return r.count; }));
+    var niceMax = niceCeiling(max);
+
+    var area = document.createElement('div');
+    area.className = 'plot-area';
+
+    // gridlines at 0 / 1/2 / max, with y-axis tick labels
+    [0, 0.5, 1].forEach(function (frac) {
+      var line = document.createElement('div');
+      line.className = 'gridline';
+      line.style.bottom = (frac * 100) + '%';
+      area.appendChild(line);
+      var tick = document.createElement('div');
+      tick.className = 'ytick';
+      tick.style.bottom = (frac * 100) + '%';
+      tick.textContent = fmtCompact(Math.round(niceMax * frac));
+      area.appendChild(tick);
+    });
+
+    var tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.innerHTML = '<div class="tt-value"></div><div class="tt-date"></div>';
+    area.appendChild(tooltip);
+
+    rows.forEach(function (row) {
+      var col = document.createElement('div');
+      col.className = 'bar-col';
+      var btn = document.createElement('button');
+      var label = fmtLabel(row.date) + ': ' + row.count + ' view' + (row.count === 1 ? '' : 's');
+      btn.setAttribute('aria-label', label);
+      var bar = document.createElement('div');
+      bar.className = 'bar';
+      var pct = niceMax > 0 ? Math.max((row.count / niceMax) * 100, row.count > 0 ? 2 : 0) : 0;
+      bar.style.height = pct + '%';
+      btn.appendChild(bar);
+      col.appendChild(btn);
+
+      function showTip() {
+        tooltip.querySelector('.tt-value').textContent = row.count + ' view' + (row.count === 1 ? '' : 's');
+        tooltip.querySelector('.tt-date').textContent = fmtLabel(row.date);
+        var colRect = col.getBoundingClientRect();
+        var areaRect = area.getBoundingClientRect();
+        tooltip.style.left = (colRect.left - areaRect.left + colRect.width / 2) + 'px';
+        tooltip.style.top = (colRect.top - areaRect.top) + 'px';
+        tooltip.classList.add('visible');
+      }
+      function hideTip() { tooltip.classList.remove('visible'); }
+
+      btn.addEventListener('pointerenter', showTip);
+      btn.addEventListener('pointermove', showTip);
+      btn.addEventListener('pointerleave', hideTip);
+      btn.addEventListener('focus', showTip);
+      btn.addEventListener('blur', hideTip);
+
+      area.appendChild(col);
+    });
+
+    plot.appendChild(area);
+
+    var xAxis = document.createElement('div');
+    xAxis.className = 'x-axis';
+    var step = Math.ceil(rows.length / 10); // thin labels so they don't collide
+    rows.forEach(function (row, i) {
+      var span = document.createElement('span');
+      span.textContent = (i % step === 0 || i === rows.length - 1) ? fmtLabel(row.date) : '';
+      xAxis.appendChild(span);
+    });
+    plot.appendChild(xAxis);
+
+    var table = buildTable(rows);
+    plot.appendChild(table);
+  }
+
+  function buildTable(rows) {
+    var table = document.createElement('table');
+    table.className = 'data-table' + (showingTable ? ' visible' : '');
+    table.id = 'dataTable';
+    var thead = document.createElement('thead');
+    thead.innerHTML = '<tr><th>Date</th><th class="num">Views</th></tr>';
+    table.appendChild(thead);
+    var tbody = document.createElement('tbody');
+    rows.slice().reverse().forEach(function (row) {
+      var tr = document.createElement('tr');
+      var tdDate = document.createElement('td');
+      tdDate.textContent = fmtLabel(row.date);
+      var tdVal = document.createElement('td');
+      tdVal.className = 'num';
+      tdVal.textContent = String(row.count);
+      tr.appendChild(tdDate);
+      tr.appendChild(tdVal);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    return table;
+  }
+
+  function niceCeiling(max) {
+    if (max <= 0) return 1;
+    var pow = Math.pow(10, Math.floor(Math.log(max) / Math.LN10));
+    var n = max / pow;
+    var niceN = n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10;
+    return niceN * pow;
+  }
+
+  tableToggle.addEventListener('click', function () {
+    showingTable = !showingTable;
+    tableToggle.setAttribute('aria-pressed', String(showingTable));
+    tableToggle.textContent = showingTable ? 'View as chart' : 'View as table';
+    var t = document.getElementById('dataTable');
+    var area = plot.querySelector('.plot-area');
+    var xAxis = plot.querySelector('.x-axis');
+    if (t) t.classList.toggle('visible', showingTable);
+    if (area) area.style.display = showingTable ? 'none' : 'flex';
+    if (xAxis) xAxis.style.display = showingTable ? 'none' : 'flex';
+  });
+
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      pills.forEach(function (p) { p.setAttribute('aria-pressed', 'false'); });
+      pill.setAttribute('aria-pressed', 'true');
+      loadRange(parseInt(pill.dataset.days, 10));
+    });
+  });
+
+  loadRange(30);
+})();
+</script>
+</body>
+</html>
